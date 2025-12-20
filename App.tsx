@@ -1,0 +1,356 @@
+
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Camera, Upload, RotateCcw, Download, Loader2, Sparkles, 
+  History as HistoryIcon, X, Image as ImageIcon, Monitor, Zap, 
+  Skull, Ghost, ArrowRight, CheckCircle2, Flame, Crown, 
+  Settings2, Share2, MousePointer2, Star, Trash2, Maximize2, ShieldCheck, Lock, EyeOff, Scale
+} from 'lucide-react';
+import { TRANSLATIONS, PRICING_PLANS, EXAMPLES, PRESETS } from './constants';
+import { Language, AppStep, UserState, PlanType, Preset, HistoryItem } from './types';
+import { transformImage } from './services/geminiService';
+import BeforeAfterSlider from './components/BeforeAfterSlider';
+import PaywallModal from './components/PaywallModal';
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// --- LANDING PAGE ---
+const LandingPage: React.FC<{ onStart: () => void }> = ({ onStart }) => {
+  const t = TRANSLATIONS;
+  return (
+    <div className="min-h-screen bg-[#050511] text-white overflow-x-hidden font-sans">
+      <nav className="flex items-center justify-between px-6 py-5 max-w-7xl mx-auto relative z-50">
+        <div className="flex items-center gap-2 group">
+          <div className="w-8 h-8 bg-[#ccff00] rounded-lg flex items-center justify-center border-2 border-black -rotate-6 group-hover:rotate-0 transition-transform">
+             <Ghost className="text-black w-5" />
+          </div>
+          <span className="text-xl font-black tracking-tighter">PrankGen</span>
+        </div>
+        <button onClick={onStart} className="px-6 py-2 rounded-full bg-[#ccff00] text-black text-sm font-bold hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.3)]">
+          Get Started
+        </button>
+      </nav>
+
+      <section className="relative pt-16 pb-24 px-6 text-center">
+        <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-purple-600/10 blur-[120px] rounded-full pointer-events-none" />
+        <h1 className="text-5xl sm:text-7xl font-black leading-tight tracking-tighter mb-8">
+          Turn Normal Photos Into <br/><span className="text-[#ccff00] italic">Absolute Chaos.</span>
+        </h1>
+        <p className="text-lg text-slate-400 max-w-lg mx-auto mb-12">
+          The most advanced AI prank engine. First generation is on the house!
+        </p>
+        <button onClick={onStart} className="px-10 py-5 bg-[#ccff00] text-black text-xl font-black rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_25px_rgba(204,255,0,0.4)] flex items-center gap-3 mx-auto">
+          <Zap size={24} fill="black" /> Try for Free
+        </button>
+      </section>
+    </div>
+  );
+};
+
+// --- EDITOR APP ---
+const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const lang: Language = 'en';
+  const [step, setStep] = useState<AppStep>('upload');
+  const [user, setUser] = useState<UserState>(() => {
+    const saved = localStorage.getItem('prankgen_user');
+    return saved ? JSON.parse(saved) : { tokens: 1, plan: 'free', planExpiry: null };
+  });
+  const [history, setHistory] = useState<HistoryItem[]>(() => {
+    const saved = localStorage.getItem('prankgen_history');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [originalImage, setOriginalImage] = useState<string | null>(null);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [customPrompt, setCustomPrompt] = useState('');
+  const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
+  const [fakeProgress, setFakeProgress] = useState(0);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const t = TRANSLATIONS;
+
+  useEffect(() => {
+    localStorage.setItem('prankgen_user', JSON.stringify(user));
+    localStorage.setItem('prankgen_history', JSON.stringify(history));
+  }, [user, history]);
+
+  useEffect(() => {
+    if (isGenerating) {
+      const messages = t.loading_messages[lang].split('|');
+      let msgIdx = 0;
+      const mInt = setInterval(() => {
+        msgIdx = (msgIdx + 1) % messages.length;
+        setLoadingMessage(messages[msgIdx]);
+      }, 3000);
+      const pInt = setInterval(() => {
+        setFakeProgress(prev => prev < 92 ? prev + Math.random() * 5 : prev);
+      }, 800);
+      return () => { clearInterval(mInt); clearInterval(pInt); };
+    }
+  }, [isGenerating]);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAnalyzing(true);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setOriginalImage(reader.result as string);
+        setGeneratedImage(null);
+        setAnalyzing(false);
+        setStep('preset');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleGenerate = async () => {
+    const cost = selectedPresetId ? PRESETS.find(p => p.id === selectedPresetId)?.cost || 1 : 1;
+    if (user.tokens < cost) {
+      setShowPaywall(true);
+      return;
+    }
+
+    setIsGenerating(true);
+    setStep('generating');
+    setGeneratedImage(null);
+
+    try {
+      const result = await transformImage(originalImage!, customPrompt);
+      setGeneratedImage(result);
+      
+      const newHistoryItem: HistoryItem = {
+        id: Date.now().toString(),
+        original: originalImage!,
+        generated: result,
+        prompt: customPrompt,
+        timestamp: Date.now()
+      };
+      
+      setHistory(prev => [newHistoryItem, ...prev]);
+      setUser(prev => ({ ...prev, tokens: Math.max(0, prev.tokens - cost) }));
+      setStep('result');
+    } catch (err: any) {
+      alert(err.message || "Engine Error");
+      setStep('preset');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handlePurchase = (plan: PlanType, tokens: number) => {
+    setUser(prev => ({
+      ...prev,
+      plan,
+      tokens: prev.tokens + tokens,
+      planExpiry: Date.now() + (30 * 24 * 60 * 60 * 1000)
+    }));
+    setShowPaywall(false);
+  };
+
+  const handleHistoryView = (item: HistoryItem) => {
+    setOriginalImage(item.original);
+    setGeneratedImage(item.generated);
+    setCustomPrompt(item.prompt);
+    setStep('result');
+  };
+
+  // Fix: Added handleReset to clear the editor state and return to upload step
+  const handleReset = () => {
+    setOriginalImage(null);
+    setGeneratedImage(null);
+    setCustomPrompt('');
+    setSelectedPresetId(null);
+    setStep('upload');
+  };
+
+  // Fix: Added handleDownload to allow users to save the generated image
+  const handleDownload = (imageUrl: string) => {
+    if (!imageUrl) return;
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = `prankgen-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Fix: Added handleShare to use the Web Share API for sharing the image
+  const handleShare = async (imageUrl: string) => {
+    if (!imageUrl) return;
+    if (navigator.share) {
+      try {
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], 'prank.png', { type: 'image/png' });
+        await navigator.share({
+          files: [file],
+          title: 'PrankGen Creation',
+          text: 'Look what I created with PrankGen!',
+        });
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    } else {
+      alert('Sharing is not supported on this browser. Try saving the image instead.');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#050511] font-sans">
+      {/* RESTORED HEADER */}
+      <header className="sticky top-0 z-[60] w-full border-b border-white/5 bg-[#050511]/90 backdrop-blur-xl h-20 flex justify-between items-center px-6">
+        <div className="flex items-center gap-3 cursor-pointer group" onClick={onBack}>
+          <div className="w-10 h-10 rounded-xl bg-[#ccff00] flex items-center justify-center shadow-lg"><Ghost size={20} className="text-black" /></div>
+          <div>
+            <h1 className="text-xl font-bold text-white leading-none">PrankGen</h1>
+            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">AI Chaos Engine</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 px-4 py-2 bg-[#1E2332] rounded-full border border-white/5 shadow-inner">
+             <Zap size={14} className="text-[#ccff00]" fill="currentColor" />
+             <div className="flex flex-col leading-none">
+                <span className="text-sm font-black text-white">{user.tokens}</span>
+                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Credits</span>
+             </div>
+          </div>
+          <div className="relative group">
+            <button onClick={() => setShowPaywall(true)} className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-sm font-black hover:scale-105 transition-all shadow-lg active:scale-95">
+              <Crown size={14} fill="white" />
+              <span>Upgrade</span>
+            </button>
+            <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all pointer-events-none bg-[#1a1c2c] border border-white/10 px-4 py-2 rounded-xl text-[10px] font-bold text-white shadow-2xl z-[100]">
+              Unlock 80 images/month
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="flex flex-col lg:flex-row flex-grow min-h-0">
+        {/* CANVAS */}
+        <div className="flex-1 bg-[#0a0a0e] relative flex flex-col items-center p-6 border-r border-white/5 overflow-y-auto">
+          <div className="w-full max-w-4xl space-y-8">
+            {step === 'generating' ? (
+              <div className="flex flex-col items-center py-20 text-center animate-in fade-in duration-500">
+                <div className="relative w-48 h-48 mb-10">
+                  <div className="absolute inset-0 border-[6px] border-[#ccff00]/20 rounded-full"></div>
+                  <div className="absolute inset-0 border-[6px] border-[#ccff00] rounded-full border-t-transparent animate-spin"></div>
+                  <div className="absolute inset-6 bg-[#ccff00]/10 rounded-full flex items-center justify-center"><Sparkles className="text-[#ccff00]" size={40} /></div>
+                  <div className="absolute -bottom-2 right-0 bg-black border border-white/10 px-3 py-1 rounded-full text-[#ccff00] text-xs font-black">{Math.floor(fakeProgress)}%</div>
+                </div>
+                <h2 className="text-3xl font-black text-white mb-2">{loadingMessage || t.generating[lang]}</h2>
+                <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">Calibrating distortions...</p>
+              </div>
+            ) : !originalImage ? (
+              <div onClick={() => fileInputRef.current?.click()} className="group w-full aspect-video rounded-[40px] border-4 border-dashed border-white/10 hover:border-[#ccff00]/50 transition-all flex flex-col items-center justify-center cursor-pointer bg-[#151925]/50 p-10">
+                 {analyzing ? <Loader2 className="animate-spin text-[#ccff00]" size={48} /> : (
+                   <>
+                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Upload size={40} className="text-slate-500" /></div>
+                    <h3 className="text-3xl font-black mb-2">Upload a Photo</h3>
+                    <p className="text-slate-500 font-bold">Pick a victim for your next prank</p>
+                   </>
+                 )}
+              </div>
+            ) : (
+              <div className="space-y-12 pb-20">
+                <div className="relative rounded-[40px] overflow-hidden shadow-2xl border border-white/10 bg-[#050511]">
+                  {generatedImage ? (
+                    <BeforeAfterSlider original={originalImage} generated={generatedImage} />
+                  ) : (
+                    <img src={originalImage} alt="Original" className="w-full max-h-[60vh] object-contain" />
+                  )}
+                </div>
+
+                {/* CREATIONS LIST */}
+                <div className="space-y-6 pt-10 border-t border-white/5">
+                   <div className="flex items-center justify-between">
+                      <h3 className="text-xl font-black text-white flex items-center gap-3"><HistoryIcon className="text-[#ccff00]" /> {t.your_creations[lang]}</h3>
+                      <span className="text-xs font-bold text-slate-500 bg-white/5 px-3 py-1 rounded-full uppercase tracking-widest">{history.length} Saved</span>
+                   </div>
+                   {history.length === 0 ? (
+                     <div className="py-20 text-center border-2 border-dashed border-white/5 rounded-[30px] bg-white/[0.02] text-slate-600 font-bold">No cursed images yet.</div>
+                   ) : (
+                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {history.map(item => (
+                          <div key={item.id} onClick={() => handleHistoryView(item)} className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/5 cursor-pointer hover:border-[#ccff00] transition-all">
+                             <img src={item.generated} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><Maximize2 className="text-white" /></div>
+                          </div>
+                        ))}
+                     </div>
+                   )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* CONTROLS */}
+        <div className="w-full lg:w-[400px] bg-[#151925] border-l border-white/5 flex flex-col">
+          <div className="p-6 border-b border-white/5 flex items-center justify-between bg-[#151925]/50 backdrop-blur-sm">
+             <div className="flex items-center gap-2"><Settings2 size={16} className="text-[#ccff00]" /><h2 className="text-xs font-black uppercase tracking-widest text-white">Configuration</h2></div>
+             {originalImage && <button onClick={handleReset} className="text-[10px] font-black text-red-400 flex items-center gap-1 uppercase hover:text-red-300"><RotateCcw size={12} /> Clear</button>}
+          </div>
+
+          <div className="flex-1 p-6 space-y-8 overflow-y-auto">
+            <div className="space-y-4">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">1. Your Vision</label>
+              <textarea 
+                value={customPrompt} 
+                onChange={e => {setCustomPrompt(e.target.value); setSelectedPresetId(null);}} 
+                placeholder="Turn me into a terrifying zombie..."
+                className="w-full h-32 bg-[#0a0a0e] border border-white/10 rounded-2xl p-4 text-white text-sm focus:border-[#ccff00] transition-all resize-none shadow-inner"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">2. Quick Presets</label>
+              <div className="grid grid-cols-2 gap-2">
+                {PRESETS.map(p => (
+                  <button key={p.id} onClick={() => {setCustomPrompt(p.prompt); setSelectedPresetId(p.id);}} className={`p-4 rounded-xl border text-left transition-all ${selectedPresetId === p.id ? 'bg-[#ccff00] text-black border-transparent' : 'bg-[#1E2332] border-white/5 text-white hover:border-white/10'}`}>
+                    <span className="text-2xl mb-2 block">{p.icon}</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest leading-none">{p.label[lang]}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-[#151925] border-t border-white/5 space-y-4">
+            {generatedImage && (
+              <div className="grid grid-cols-2 gap-3 mb-2 animate-in slide-in-from-bottom duration-300">
+                <button onClick={() => handleDownload(generatedImage)} className="py-4 bg-white text-black rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors"><Download size={14} /> Save</button>
+                <button onClick={() => handleShare(generatedImage)} className="py-4 bg-[#1E2332] text-white rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 border border-white/10 hover:bg-[#252a3b] transition-colors"><Share2 size={14} /> Share</button>
+              </div>
+            )}
+            <button 
+              onClick={handleGenerate} 
+              disabled={isGenerating || !originalImage || !customPrompt} 
+              className={`w-full py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 shadow-xl transition-all active:scale-[0.98] ${isGenerating || !originalImage || !customPrompt ? 'bg-slate-800 text-slate-600 cursor-not-allowed opacity-50' : 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[#ccff00]/10'}`}
+            >
+               {isGenerating ? <Loader2 className="animate-spin" /> : <><Zap size={22} fill="currentColor" /> {t.generate_btn[lang]}</>}
+            </button>
+            <p className="text-center text-[10px] text-slate-500 font-black uppercase tracking-widest opacity-80">{t.cost_hint[lang]}</p>
+          </div>
+        </div>
+      </div>
+
+      <input type="file" ref={fileInputRef} onChange={handleFileUpload} className="hidden" accept="image/*" />
+      <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} lang={lang} onPurchase={handlePurchase} />
+    </div>
+  );
+};
+
+// --- MAIN APP ---
+const App: React.FC = () => {
+  const [view, setView] = useState<'landing' | 'editor'>('landing');
+  return view === 'landing' ? <LandingPage onStart={() => setView('editor')} /> : <EditorApp onBack={() => setView('landing')} />;
+};
+
+export default App;

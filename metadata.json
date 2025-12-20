@@ -1,0 +1,7 @@
+{
+  "name": "UzAI Transform",
+  "description": "Uzbek-first AI photo transformation app featuring cultural presets and style transfer.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
