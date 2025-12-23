@@ -80,19 +80,23 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   }, [isGenerating]);
 
   // Camera handlers
+  // Camera handlers
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
       streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
       setShowCamera(true);
     } catch (err) {
       console.error("Camera access denied:", err);
       alert("Could not access camera. Please allow camera permissions.");
     }
   };
+
+  useEffect(() => {
+    if (showCamera && streamRef.current && videoRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+    }
+  }, [showCamera]);
 
   const stopCamera = () => {
     if (streamRef.current) {
@@ -106,7 +110,8 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (videoRef.current) {
       const imageData = captureVideoFrame(videoRef.current);
       setOriginalImage(imageData);
-      setStep('preview'); // Or keep in upload if you want to show preview there? Existing logic sets originalImage and renders preview automatically.
+      setGeneratedImage(null);
+      setStep('preset'); // Ensures we go to the editor view, not 'preview' which might not be handled
       stopCamera();
     }
   };
