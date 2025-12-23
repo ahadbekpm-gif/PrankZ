@@ -15,6 +15,16 @@ import LandingPage from './components/LandingPage';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+// Helper to capture video frame
+const captureVideoFrame = (video: HTMLVideoElement): string => {
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx?.drawImage(video, 0, 0);
+  return canvas.toDataURL('image/jpeg');
+};
+
 // --- LANDING PAGE ---
 // Old LandingPage component removed. Now using components/LandingPage.tsx
 
@@ -41,6 +51,11 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [loadingMessage, setLoadingMessage] = useState('');
   const [fakeProgress, setFakeProgress] = useState(0);
 
+  // Camera state
+  const [showCamera, setShowCamera] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const t = TRANSLATIONS;
 
@@ -63,6 +78,38 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       return () => { clearInterval(mInt); clearInterval(pInt); };
     }
   }, [isGenerating]);
+
+  // Camera handlers
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setShowCamera(true);
+    } catch (err) {
+      console.error("Camera access denied:", err);
+      alert("Could not access camera. Please allow camera permissions.");
+    }
+  };
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    setShowCamera(false);
+  };
+
+  const handleCapturePhoto = () => {
+    if (videoRef.current) {
+      const imageData = captureVideoFrame(videoRef.current);
+      setOriginalImage(imageData);
+      setStep('preview'); // Or keep in upload if you want to show preview there? Existing logic sets originalImage and renders preview automatically.
+      stopCamera();
+    }
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -232,20 +279,36 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                   </div>
                 </div>
 
-                <div onClick={() => fileInputRef.current?.click()} className="group w-full max-w-2xl mx-auto rounded-[3rem] border-4 border-dashed border-white/10 hover:border-[#ccff00] hover:bg-[#ccff00]/5 transition-all duration-500 flex flex-col items-center justify-center cursor-pointer bg-[#151925]/30 p-12 relative overflow-hidden">
+                <div className="w-full max-w-2xl mx-auto rounded-[3rem] border-4 border-dashed border-white/10 flex flex-col items-center justify-center bg-[#151925]/30 p-12 relative overflow-hidden">
                   <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
                   {analyzing ? <Loader2 className="animate-spin text-[#ccff00]" size={48} /> : (
                     <>
-                      <div className="w-24 h-24 rounded-full bg-[#ccff00] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-[0_0_30px_rgba(204,255,0,0.3)]">
+                      <div className="w-24 h-24 rounded-full bg-[#ccff00] flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(204,255,0,0.3)]">
                         <Upload size={40} className="text-black" />
                       </div>
-                      <h3 className="text-5xl md:text-6xl font-black mb-4 tracking-tighter italic text-center">
-                        Drop a Photo. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] to-green-400">Ruin It.</span>
-                      </h3>
-                      <p className="text-slate-400 font-bold text-lg text-center max-w-md">
+
+                      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md z-10">
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex-1 py-4 bg-[#1E2332] border border-white/10 rounded-2xl font-black uppercase text-sm hover:bg-[#252a3b] hover:border-white/20 transition-all flex items-center justify-center gap-2 group"
+                        >
+                          <Upload size={18} className="group-hover:-translate-y-1 transition-transform" />
+                          Upload Photo
+                        </button>
+
+                        <button
+                          onClick={startCamera}
+                          className="flex-1 py-4 bg-[#ccff00] text-black rounded-2xl font-black uppercase text-sm hover:bg-[#b3e600] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(204,255,0,0.2)] hover:shadow-[0_0_30px_rgba(204,255,0,0.4)] active:scale-95"
+                        >
+                          <Camera size={18} />
+                          Take Photo
+                        </button>
+                      </div>
+
+                      <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mt-8">
                         First chaos is free. <span className="text-white">No mercy after 😈</span>
                       </p>
+
                       <input
                         type="file"
                         ref={fileInputRef}
@@ -256,6 +319,33 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     </>
                   )}
                 </div>
+
+                {/* CAMERA OVERLAY */}
+                {showCamera && (
+                  <div className="fixed inset-0 z-[100] bg-black flex flex-col">
+                    <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover"
+                        onLoadedMetadata={() => videoRef.current?.play()}
+                      />
+                      <div className="absolute inset-0 border-[20px] border-black/50 pointer-events-none"></div>
+                    </div>
+
+                    <div className="h-32 bg-black flex items-center justify-between px-8 pb-8 pt-4">
+                      <button onClick={stopCamera} className="text-white font-bold p-4 rounded-full bg-white/10 hover:bg-white/20"><X size={24} /></button>
+                      <button
+                        onClick={handleCapturePhoto}
+                        className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center relative group active:scale-95 transition-transform"
+                      >
+                        <div className="w-16 h-16 bg-white rounded-full group-hover:bg-[#ccff00] transition-colors"></div>
+                      </button>
+                      <div className="w-12"></div> {/* Spacer for alignment */}
+                    </div>
+                  </div>
+                )}
               </>
             ) : (
               <div className="space-y-12 pb-20">
