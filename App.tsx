@@ -180,8 +180,8 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     <div className="min-h-screen flex flex-col bg-[#050511] font-sans">
       {/* RESTORED HEADER */}
       <header className="sticky top-0 z-[60] w-full border-b border-white/5 bg-[#050511]/90 backdrop-blur-xl h-20 flex justify-between items-center px-6">
-        <div className="flex items-center gap-3 cursor-pointer group" onClick={onBack}>
-          <div className="w-10 h-10 rounded-xl bg-[#ccff00] flex items-center justify-center shadow-lg"><Ghost size={20} className="text-black" /></div>
+        <div className="flex items-center gap-3 cursor-pointer group hover:animate-glitch" onClick={onBack}>
+          <div className="w-10 h-10 rounded-xl bg-[#ccff00] flex items-center justify-center shadow-lg overflow-hidden border-2 border-black"><img src="/logo.jpg" alt="Prank-Z" className="w-full h-full object-cover" /></div>
           <div>
             <h1 className="text-xl font-bold text-white leading-none">Prank-Z</h1>
             <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">AI Chaos Engine</span>
