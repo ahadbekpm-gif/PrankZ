@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ghost, Zap, Upload, Skull, Share2, Star, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Ghost, Zap, Upload, Skull, Share2, Star, ArrowRight, CheckCircle2, MessageSquare, Brain } from 'lucide-react';
 import BeforeAfterSlider from './BeforeAfterSlider';
 
 // Example images for the landing page slider
@@ -13,7 +13,7 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
     return (
-        <div className="min-h-screen bg-[#050511] text-white overflow-x-hidden font-sans selection:bg-[#ccff00] selection:text-black">
+        <div className="min-h-screen bg-[#050511] text-white overflow-x-hidden selection:bg-[#ccff00] selection:text-black">
             {/* NAVBAR */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050511]/80 backdrop-blur-md border-b border-white/5">
                 <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
@@ -33,27 +33,31 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             </nav>
 
             {/* HERO SECTION */}
-            <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+            <section className="relative pt-32 pb-32 px-6 overflow-hidden">
                 {/* Abstract Background Elements */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-purple-600/20 blur-[120px] rounded-full pointer-events-none opacity-50 animate-pulse" />
                 <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-[#ccff00]/5 blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-pink-600/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
 
                 <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 relative z-10">
 
                     {/* TEXT CONTENT */}
                     <div className="flex-1 text-center lg:text-left space-y-8">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-5 duration-700">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-5 duration-700 hover:bg-white/10 transition-colors cursor-default">
                             <Star size={14} className="text-[#ccff00] fill-[#ccff00]" />
                             <span className="text-xs font-bold uppercase tracking-widest text-slate-300">Rated #1 Prank App of 2024</span>
                         </div>
 
                         <h1 className="text-5xl sm:text-7xl font-black leading-[1.1] tracking-tighter animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
-                            Turn Friends into <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] to-green-400 italic">Viral Memes.</span>
+                            Turn Normal Photos Into <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-green-400 to-purple-500 italic">Absolute Chaos in Seconds.</span>
                         </h1>
 
                         <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-                            The professional AI chaos engine. Transform innocent photos into cursed masterpieces, zombies, and cyber-freaks in seconds.
+                            Upload a photo. <br />
+                            We ruin it with AI. <br />
+                            You send it. <br />
+                            They regret it.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
@@ -61,25 +65,32 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                                 onClick={onStart}
                                 className="w-full sm:w-auto px-8 py-4 bg-[#ccff00] text-black text-lg font-black rounded-2xl hover:bg-[#b3e600] hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(204,255,0,0.3)] flex items-center justify-center gap-3"
                             >
-                                <Zap size={20} fill="black" /> Start Pranking - Free
+                                <Zap size={20} fill="black" /> Start Pranking (Free)
                             </button>
                             <span className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                                <CheckCircle2 size={14} /> No Signup Required
+                                <CheckCircle2 size={14} /> No login required. First prank is free.
                             </span>
                         </div>
                     </div>
 
                     {/* VISUAL CONTENT (Slider) */}
-                    <div className="flex-1 w-full max-w-lg lg:max-w-none animate-in fade-in slide-in-from-right-10 duration-1000 delay-300">
-                        <div className="relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-[#ccff00] to-purple-600 rounded-[40px] blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
-                            <div className="relative rounded-[40px] overflow-hidden border border-white/10 bg-[#0a0a0e] shadow-2xl aspect-[4/5] sm:aspect-square">
-                                {/* Note: We use the existing slider component. If images fail to load due to demo URLs, that's expected in dev, 
-                      but visually this structure is correct. */}
+                    <div className="flex-1 w-full max-w-lg lg:max-w-none animate-in fade-in slide-in-from-right-10 duration-1000 delay-300 relative">
+                        {/* Chaos Elements */}
+                        <div className="absolute -top-12 -right-12 text-[#ccff00] animate-bounce delay-700 opacity-80 z-20">
+                            <Skull size={48} className="drop-shadow-[0_0_15px_rgba(204,255,0,0.5)] rotate-12" />
+                        </div>
+                        <div className="absolute -bottom-8 -left-8 text-purple-500 animate-pulse delay-500 opacity-60 z-20">
+                            <Ghost size={64} className="-rotate-12" />
+                        </div>
+
+                        <div className="relative group rotate-2 hover:rotate-0 transition-transform duration-500 ease-out">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-[#ccff00] via-purple-500 to-pink-500 rounded-[40px] blur opacity-40 group-hover:opacity-75 transition duration-1000 animate-pulse"></div>
+                            <div className="relative rounded-[40px] overflow-hidden border-2 border-white/10 bg-[#0a0a0e] shadow-2xl aspect-[4/5] sm:aspect-square transform transition-transform">
+                                {/* Note: We use the existing slider component. */}
                                 <BeforeAfterSlider original={DEMO_BEFORE} generated={DEMO_AFTER} />
 
-                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full text-white text-xs font-bold uppercase tracking-widest whitespace-nowrap z-20 pointer-events-none">
-                                    Slide to see the damage
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full text-white text-xs font-bold uppercase tracking-widest whitespace-nowrap z-20 pointer-events-none flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-[#ccff00] animate-ping" /> Slide to Chaos
                                 </div>
                             </div>
                         </div>
@@ -88,25 +99,191 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                 </div>
             </section>
 
-            {/* HOW IT WORKS */}
-            <section className="py-24 px-6 border-t border-white/5 bg-[#0a0a0e]">
-                <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-5xl font-black mb-16 tracking-tighter">How to <span className="text-purple-500">Ruin a Friendship</span></h2>
+            {/* SOCIAL PROOF BAR */}
+            <section className="py-12 px-6 border-b border-white/5 bg-[#050511] relative">
+                <div className="absolute left-0 top-0 w-1/3 h-full bg-gradient-to-r from-purple-900/10 to-transparent pointer-events-none" />
+                <div className="max-w-4xl mx-auto relative z-10">
+                    <div className="bg-[#151925]/80 backdrop-blur-sm border border-white/10 rounded-full py-4 px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left shadow-lg overflow-hidden relative group hover:border-[#ccff00]/20 transition-colors">
+                        <div className="absolute top-0 left-1/4 w-32 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 animate-shimmer" />
 
-                    <div className="grid md:grid-cols-3 gap-8">
+                        <div className="flex items-center gap-3">
+                            <span className="text-2xl">🔥</span>
+                            <span className="text-slate-300 font-bold"><strong className="text-white">12,403,991</strong> cursed images generated</span>
+                        </div>
+                        <div className="h-0 md:h-8 w-full md:w-px bg-white/10" />
+                        <div className="flex items-center gap-3">
+                            <span className="text-2xl">👥</span>
+                            <span className="text-slate-300 font-bold">Used by people who <span className="text-red-400 line-through decoration-2">should</span> NOT be trusted with Photoshop</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* FEATURES SECTION */}
+            <section className="py-32 px-6 border-t border-white/5 bg-[#0a0a0e] relative overflow-hidden">
+                <div className="absolute top-1/2 right-0 w-[800px] h-[800px] bg-purple-900/10 blur-[150px] rounded-full pointer-events-none" />
+                <div className="max-w-7xl mx-auto text-center relative z-10">
+                    <h2 className="text-3xl md:text-6xl font-black mb-20 tracking-tighter max-w-4xl mx-auto">
+                        Everything You Need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] to-purple-500">Ruin a Perfectly Good Photo</span>
+                    </h2>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
-                            { icon: <Upload size={32} />, title: '1. Upload Photo', desc: 'Pick a clear photo of your victim (friend).' },
-                            { icon: <Skull size={32} />, title: '2. Choose Effect', desc: 'Select from Zombie, Old Age, or pure Glitch chaos.' },
-                            { icon: <Share2 size={32} />, title: '3. Share & Laugh', desc: 'Download the result and wait for the angry texts.' }
-                        ].map((step, idx) => (
-                            <div key={idx} className="p-8 rounded-3xl bg-[#151925] border border-white/5 hover:border-[#ccff00]/30 transition-all group hover:-translate-y-2">
-                                <div className="w-16 h-16 mx-auto bg-[#ccff00] rounded-2xl flex items-center justify-center mb-6 text-black group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(204,255,0,0.2)]">
-                                    {step.icon}
+                            {
+                                icon: <Skull size={32} />,
+                                title: 'Cursed Filters',
+                                desc: 'Make anyone look deeply untrustworthy.',
+                                color: 'bg-red-500'
+                            },
+                            {
+                                icon: <MessageSquare size={32} />,
+                                title: 'Fake Chat Generator',
+                                desc: 'Create fake receipts. Ruin friendships.',
+                                color: 'bg-blue-500'
+                            },
+                            {
+                                icon: <Brain size={32} />,
+                                title: 'AI Chaos Mode',
+                                desc: 'Let AI decide how evil today is.',
+                                color: 'bg-purple-500'
+                            },
+                            {
+                                icon: <Zap size={32} />,
+                                title: 'One-Click Ruin',
+                                desc: 'Upload → regret → send.',
+                                color: 'bg-[#ccff00] text-black'
+                            }
+                        ].map((feature, idx) => (
+                            <div key={idx} className="p-10 rounded-[2rem] bg-[#151925] border border-white/5 hover:border-[#ccff00]/30 transition-all group hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center relative overflow-hidden">
+                                <div className={`absolute inset-0 bg-gradient-to-b from-${feature.color.split('-')[1]}-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${feature.color.includes('text-black') ? feature.color : feature.color + '/20 text-' + feature.color.replace('bg-', '')} group-hover:scale-110 transition-transform shadow-lg relative z-10`}>
+                                    {feature.icon}
                                 </div>
-                                <h3 className="text-xl font-black mb-4">{step.title}</h3>
-                                <p className="text-slate-400 font-medium leading-relaxed">{step.desc}</p>
+                                <h3 className="text-2xl font-black mb-3 relative z-10">{feature.title}</h3>
+                                <p className="text-slate-400 font-medium leading-relaxed relative z-10">{feature.desc}</p>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* HOW IT WORKS */}
+            <section className="py-32 px-6 border-t border-white/5 bg-[#050511] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-pink-600/10 blur-[100px] rounded-full pointer-events-none" />
+                <div className="max-w-7xl mx-auto text-center relative z-10">
+                    <h2 className="text-3xl md:text-6xl font-black mb-20 tracking-tighter">3 Steps. <span className="text-[#ccff00]">Zero Regrets.</span></h2>
+
+                    <div className="grid md:grid-cols-3 gap-8 mb-16">
+                        {[
+                            {
+                                number: '1',
+                                icon: <Upload size={32} />,
+                                title: 'Upload a photo',
+                                desc: 'Pick a victim.'
+                            },
+                            {
+                                number: '2',
+                                icon: <Skull size={32} />,
+                                title: 'Pick a prank',
+                                desc: 'AI does the damage.'
+                            },
+                            {
+                                number: '3',
+                                icon: <Share2 size={32} />,
+                                title: 'Send it',
+                                desc: 'Wait for the reaction.'
+                            }
+                        ].map((step, idx) => (
+                            <div key={idx} className="relative p-8 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all group">
+                                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-[#ccff00] rounded-full flex items-center justify-center text-black font-black text-xl border-4 border-[#050511] z-20">
+                                    {step.number}
+                                </div>
+                                <div className="mt-4 mb-4 text-[#ccff00]/50 group-hover:text-[#ccff00] transition-colors duration-300">
+                                    {step.icon}
+                                </div>
+                                <h3 className="text-2xl font-black mb-2">{step.title}</h3>
+                                <p className="text-slate-400 font-bold">{step.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-bold uppercase tracking-widest animate-pulse">
+                        <span className="text-xl">⚠️</span> We are not responsible for group chat chaos.
+                    </div>
+                </div>
+            </section>
+
+            {/* PROOF GALLERY SECTION */}
+            <section className="py-24 px-6 border-t border-white/5 bg-[#050511]">
+                <div className="max-w-7xl mx-auto">
+                    <h2 className="text-3xl md:text-6xl font-black mb-4 tracking-tighter text-center">
+                        Proof This Is a <span className="text-red-500">Bad Idea</span>
+                    </h2>
+                    <p className="text-xl text-slate-400 font-bold text-center mb-16">(In a Good Way)</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]">
+
+                        {/* CARD 1: Fake Chat */}
+                        <div className="row-span-2 rounded-3xl bg-[#151925] border border-white/5 p-6 relative overflow-hidden group hover:border-[#ccff00]/30 transition-all">
+                            <div className="absolute top-0 left-0 w-full h-8 bg-[#1a1d2d] flex items-center px-4 gap-2 border-b border-white/5">
+                                <div className="w-3 h-3 rounded-full bg-red-500" />
+                                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                                <div className="w-3 h-3 rounded-full bg-green-500" />
+                                <span className="ml-auto text-[10px] text-slate-500 font-bold uppercase">Mom</span>
+                            </div>
+                            <div className="mt-8 space-y-4">
+                                <div className="bg-[#2a2e3d] text-white p-3 rounded-2xl rounded-tl-none max-w-[80%] text-sm">
+                                    <img src={DEMO_AFTER} className="rounded-lg mb-2 opacity-80" />
+                                    Look what happened to Sarah 😂
+                                </div>
+                                <div className="bg-[#ccff00] text-black p-3 rounded-2xl rounded-tr-none max-w-[80%] ml-auto text-sm font-bold shadow-lg">
+                                    OMG is she okay?? That looks Infected.
+                                </div>
+                                <div className="bg-[#2a2e3d] text-white p-3 rounded-2xl rounded-tl-none max-w-[80%] text-sm">
+                                    It's the Zombie filter lol
+                                </div>
+                                <div className="bg-[#ccff00] text-black p-3 rounded-2xl rounded-tr-none max-w-[80%] ml-auto text-sm font-bold shadow-lg">
+                                    I almost called 911... send me the app link rn
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* CARD 2: Meme Edit */}
+                        <div className="rounded-3xl border border-white/5 relative overflow-hidden group cursor-pointer">
+                            <img src={DEMO_BEFORE} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                            <div className="absolute inset-0 bg-black/50 group-hover:bg-transparent transition-colors" />
+                            <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black to-transparent">
+                                <h3 className="text-2xl font-black text-white uppercase italic drop-shadow-lg">"Trust me, I know a good barber"</h3>
+                            </div>
+                        </div>
+
+                        {/* CARD 3: News Ticker */}
+                        <div className="rounded-3xl bg-black border border-white/5 relative overflow-hidden group">
+                            <img src={DEMO_AFTER} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+                            <div className="absolute bottom-4 left-4 right-4 bg-red-600 text-white px-4 py-2 font-black uppercase text-sm animate-pulse tracking-widest">
+                                Breaking News: Local Man Turns into Glitch Demon
+                            </div>
+                            <div className="absolute top-4 right-4 bg-white text-black px-2 py-1 font-bold text-xs uppercase rounded-sm">
+                                LIVE
+                            </div>
+                        </div>
+
+                        {/* CARD 4: Before/After Static */}
+                        <div className="lg:col-span-2 rounded-3xl bg-[#151925] border border-white/5 p-4 flex gap-4 overflow-hidden group">
+                            <div className="flex-1 relative rounded-2xl overflow-hidden">
+                                <span className="absolute top-2 left-2 bg-black/60 backdrop-blur px-3 py-1 rounded-full text-xs font-bold z-10">Before</span>
+                                <img src={DEMO_BEFORE} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
+                            </div>
+                            <div className="hidden sm:flex items-center justify-center">
+                                <ArrowRight className="text-[#ccff00]" />
+                            </div>
+                            <div className="flex-1 relative rounded-2xl overflow-hidden ring-2 ring-[#ccff00]/50 shadow-[0_0_30px_rgba(204,255,0,0.1)]">
+                                <span className="absolute top-2 left-2 bg-[#ccff00] text-black px-3 py-1 rounded-full text-xs font-bold z-10">Ruined</span>
+                                <img src={DEMO_AFTER} className="w-full h-full object-cover" />
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
@@ -114,26 +291,47 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             {/* FOOTER CTA */}
             <section className="py-24 px-6 text-center relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#ccff00]/5 pointer-events-none" />
-                <div className="max-w-3xl mx-auto relative z-10">
-                    <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter">Ready to cause chaos?</h2>
-                    <p className="text-xl text-slate-400 mb-10">Join thousands of pranksters ensuring nobody trusts a photo ever again.</p>
-                    <button
-                        onClick={onStart}
-                        className="px-10 py-5 bg-white text-black text-xl font-black rounded-2xl hover:bg-slate-200 hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)]"
-                    >
-                        Launch PrankGen
-                    </button>
+                <div className="max-w-5xl mx-auto relative z-10">
+                    <h2 className="text-4xl md:text-7xl font-black mb-8 tracking-tighter leading-[1.1]">
+                        Make Something You'll <br />
+                        <span className="text-[#ccff00]">Immediately Regret.</span>
+                        <div className="text-2xl md:text-4xl text-slate-400 mt-4 line-through decoration-red-500 decoration-4">Or Don't. But You Will.</div>
+                    </h2>
+
+                    <div className="flex flex-col items-center gap-6 mt-12">
+                        <button
+                            onClick={onStart}
+                            className="px-12 py-6 bg-white text-black text-xl md:text-2xl font-black rounded-full hover:bg-[#ccff00] hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(204,255,0,0.5)] flex items-center gap-3"
+                        >
+                            🚀 Start Editing Now
+                        </button>
+                        <p className="text-sm font-bold text-slate-500 uppercase tracking-[0.2em] animate-pulse">
+                            Free. Fast. No downloads.
+                        </p>
+                    </div>
                 </div>
             </section>
 
             {/* FOOTER LINKS */}
-            <footer className="py-8 px-6 border-t border-white/5 text-center text-slate-600 text-xs font-bold uppercase tracking-widest">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p>© 2024 PrankGen AI. All rights reserved.</p>
-                    <div className="flex gap-6">
-                        <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                        <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <footer className="py-12 px-6 border-t border-white/5 bg-[#020205] text-center">
+                <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
+                    <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
+                        <Ghost size={20} />
+                        <span className="font-black tracking-tighter">PrankGen</span>
                     </div>
+
+                    <p className="text-slate-500 font-medium max-w-sm mx-auto">
+                        For jokes only. Don't be evil. Be funny. <br />
+                        <span className="text-xs opacity-50">Legal: If you get fired, that's on you.</span>
+                    </p>
+
+                    <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
+                        <a href="#" className="hover:text-[#ccff00] transition-colors">Privacy</a>
+                        <a href="#" className="hover:text-[#ccff00] transition-colors">Terms</a>
+                        <a href="#" className="hover:text-[#ccff00] transition-colors">Contact</a>
+                    </div>
+
+                    <p className="text-[10px] text-slate-700 uppercase tracking-widest">© 2024 PrankGen AI. All rights reserved.</p>
                 </div>
             </footer>
         </div>
