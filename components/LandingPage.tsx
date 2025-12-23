@@ -1,6 +1,8 @@
 import React from 'react';
 import { Ghost, Zap, Upload, Skull, Share2, Star, ArrowRight, CheckCircle2, MessageSquare, Brain } from 'lucide-react';
 import BeforeAfterSlider from './BeforeAfterSlider';
+import LegalModal from './LegalModal';
+import { LegalDocKey } from './LegalContent';
 
 // Example images for the landing page slider
 // Ideally these should be real examples, but we'll use placeholders or the user's uploaded images if available
@@ -12,8 +14,13 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+    const [activeLegal, setActiveLegal] = React.useState<LegalDocKey | null>(null);
+
     return (
         <div className="min-h-screen bg-[#050511] text-white overflow-x-hidden selection:bg-[#ccff00] selection:text-black">
+            {/* LEGAL MODAL */}
+            <LegalModal docKey={activeLegal} onClose={() => setActiveLegal(null)} />
+
             {/* NAVBAR */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050511]/80 backdrop-blur-md border-b border-white/5">
                 <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
@@ -21,7 +28,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                         <div className="w-8 h-8 bg-[#ccff00] rounded-lg flex items-center justify-center border-2 border-black -rotate-6 group-hover:rotate-0 transition-transform duration-300">
                             <Ghost className="text-black w-5" />
                         </div>
-                        <span className="text-xl font-black tracking-tighter">PrankGen</span>
+                        <span className="text-xl font-black tracking-tighter">Prank-Z</span>
                     </div>
                     <button
                         onClick={onStart}
@@ -317,7 +324,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                 <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
                     <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
                         <Ghost size={20} />
-                        <span className="font-black tracking-tighter">PrankGen</span>
+                        <span className="font-black tracking-tighter">Prank-Z</span>
                     </div>
 
                     <p className="text-slate-500 font-medium max-w-sm mx-auto">
@@ -325,13 +332,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                         <span className="text-xs opacity-50">Legal: If you get fired, that's on you.</span>
                     </p>
 
-                    <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
-                        <a href="#" className="hover:text-[#ccff00] transition-colors">Privacy</a>
-                        <a href="#" className="hover:text-[#ccff00] transition-colors">Terms</a>
-                        <a href="#" className="hover:text-[#ccff00] transition-colors">Contact</a>
-                    </div>
+                    <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-xs font-bold uppercase tracking-widest text-slate-600">
+                        <button onClick={() => setActiveLegal('privacy')} className="hover:text-[#ccff00] transition-colors">Privacy</button>
+                        <button onClick={() => setActiveLegal('terms')} className="hover:text-[#ccff00] transition-colors">Terms</button>
+                        <button onClick={() => setActiveLegal('refund')} className="hover:text-[#ccff00] transition-colors">Refund</button>
+                        <button onClick={() => setActiveLegal('acceptable_use')} className="hover:text-[#ccff00] transition-colors">Acceptable Use</button>
+                        <button onClick={() => setActiveLegal('disclaimer')} className="hover:text-[#ccff00] transition-colors">Disclaimer</button>
+                        <button onClick={() => setActiveLegal('contact')} className="hover:text-[#ccff00] transition-colors">Contact</button>
+                    </nav>
 
-                    <p className="text-[10px] text-slate-700 uppercase tracking-widest">© 2024 PrankGen AI. All rights reserved.</p>
+                    <p className="text-[10px] text-slate-700 uppercase tracking-widest">© 2024 Prank-Z. All rights reserved.</p>
                 </div>
             </footer>
         </div>

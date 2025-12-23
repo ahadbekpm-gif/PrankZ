@@ -23,11 +23,11 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const lang: Language = 'en';
   const [step, setStep] = useState<AppStep>('upload');
   const [user, setUser] = useState<UserState>(() => {
-    const saved = localStorage.getItem('prankgen_user');
+    const saved = localStorage.getItem('prankz_user');
     return saved ? JSON.parse(saved) : { tokens: 1, plan: 'free', planExpiry: null };
   });
   const [history, setHistory] = useState<HistoryItem[]>(() => {
-    const saved = localStorage.getItem('prankgen_history');
+    const saved = localStorage.getItem('prankz_history');
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -45,8 +45,8 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const t = TRANSLATIONS;
 
   useEffect(() => {
-    localStorage.setItem('prankgen_user', JSON.stringify(user));
-    localStorage.setItem('prankgen_history', JSON.stringify(history));
+    localStorage.setItem('prankz_user', JSON.stringify(user));
+    localStorage.setItem('prankz_history', JSON.stringify(history));
   }, [user, history]);
 
   useEffect(() => {
@@ -144,7 +144,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (!imageUrl) return;
     const link = document.createElement('a');
     link.href = imageUrl;
-    link.download = `prankgen-${Date.now()}.png`;
+    link.download = `prankz-${Date.now()}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -160,8 +160,8 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         const file = new File([blob], 'prank.png', { type: 'image/png' });
         await navigator.share({
           files: [file],
-          title: 'PrankGen Creation',
-          text: 'Look what I created with PrankGen!',
+          title: 'Prank-Z Creation',
+          text: 'Look what I created with Prank-Z!',
         });
       } catch (err) {
         console.error('Error sharing:', err);
@@ -178,7 +178,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <div className="flex items-center gap-3 cursor-pointer group" onClick={onBack}>
           <div className="w-10 h-10 rounded-xl bg-[#ccff00] flex items-center justify-center shadow-lg"><Ghost size={20} className="text-black" /></div>
           <div>
-            <h1 className="text-xl font-bold text-white leading-none">PrankGen</h1>
+            <h1 className="text-xl font-bold text-white leading-none">Prank-Z</h1>
             <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">AI Chaos Engine</span>
           </div>
         </div>

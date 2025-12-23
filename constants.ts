@@ -2,12 +2,12 @@
 import { Translation, Preset } from './types';
 
 export const TRANSLATIONS: Translation = {
-  app_name: { en: "PrankGen" },
+  app_name: { en: "Prank-Z" },
   credits_remaining: { en: "Credits Remaining" },
   out_of_tokens: { en: "Out of Credits" },
   upgrade_to_continue: { en: "Upgrade to continue creating" },
-  generate_btn: { 
-    en: "Generate Image ⚡" 
+  generate_btn: {
+    en: "Generate Image ⚡"
   },
   generating: { en: "Creating magic..." },
   wait_tip_1: { en: "AI is working its magic..." },
