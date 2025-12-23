@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Camera, Upload, RotateCcw, Download, Loader2, Sparkles, 
-  History as HistoryIcon, X, Image as ImageIcon, Monitor, Zap, 
-  Skull, Ghost, ArrowRight, CheckCircle2, Flame, Crown, 
+import {
+  Camera, Upload, RotateCcw, Download, Loader2, Sparkles,
+  History as HistoryIcon, X, Image as ImageIcon, Monitor, Zap,
+  Skull, Ghost, ArrowRight, CheckCircle2, Flame, Crown,
   Settings2, Share2, MousePointer2, Star, Trash2, Maximize2, ShieldCheck, Lock, EyeOff, Scale
 } from 'lucide-react';
 import { TRANSLATIONS, PRICING_PLANS, EXAMPLES, PRESETS } from './constants';
@@ -11,41 +11,12 @@ import { Language, AppStep, UserState, PlanType, Preset, HistoryItem } from './t
 import { transformImage } from './services/geminiService';
 import BeforeAfterSlider from './components/BeforeAfterSlider';
 import PaywallModal from './components/PaywallModal';
+import LandingPage from './components/LandingPage';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // --- LANDING PAGE ---
-const LandingPage: React.FC<{ onStart: () => void }> = ({ onStart }) => {
-  const t = TRANSLATIONS;
-  return (
-    <div className="min-h-screen bg-[#050511] text-white overflow-x-hidden font-sans">
-      <nav className="flex items-center justify-between px-6 py-5 max-w-7xl mx-auto relative z-50">
-        <div className="flex items-center gap-2 group">
-          <div className="w-8 h-8 bg-[#ccff00] rounded-lg flex items-center justify-center border-2 border-black -rotate-6 group-hover:rotate-0 transition-transform">
-             <Ghost className="text-black w-5" />
-          </div>
-          <span className="text-xl font-black tracking-tighter">PrankGen</span>
-        </div>
-        <button onClick={onStart} className="px-6 py-2 rounded-full bg-[#ccff00] text-black text-sm font-bold hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.3)]">
-          Get Started
-        </button>
-      </nav>
-
-      <section className="relative pt-16 pb-24 px-6 text-center">
-        <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-purple-600/10 blur-[120px] rounded-full pointer-events-none" />
-        <h1 className="text-5xl sm:text-7xl font-black leading-tight tracking-tighter mb-8">
-          Turn Normal Photos Into <br/><span className="text-[#ccff00] italic">Absolute Chaos.</span>
-        </h1>
-        <p className="text-lg text-slate-400 max-w-lg mx-auto mb-12">
-          The most advanced AI prank engine. First generation is on the house!
-        </p>
-        <button onClick={onStart} className="px-10 py-5 bg-[#ccff00] text-black text-xl font-black rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_25px_rgba(204,255,0,0.4)] flex items-center gap-3 mx-auto">
-          <Zap size={24} fill="black" /> Try for Free
-        </button>
-      </section>
-    </div>
-  );
-};
+// Old LandingPage component removed. Now using components/LandingPage.tsx
 
 // --- EDITOR APP ---
 const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
@@ -122,7 +93,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     try {
       const result = await transformImage(originalImage!, customPrompt);
       setGeneratedImage(result);
-      
+
       const newHistoryItem: HistoryItem = {
         id: Date.now().toString(),
         original: originalImage!,
@@ -130,7 +101,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         prompt: customPrompt,
         timestamp: Date.now()
       };
-      
+
       setHistory(prev => [newHistoryItem, ...prev]);
       setUser(prev => ({ ...prev, tokens: Math.max(0, prev.tokens - cost) }));
       setStep('result');
@@ -211,14 +182,14 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">AI Chaos Engine</span>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3 px-4 py-2 bg-[#1E2332] rounded-full border border-white/5 shadow-inner">
-             <Zap size={14} className="text-[#ccff00]" fill="currentColor" />
-             <div className="flex flex-col leading-none">
-                <span className="text-sm font-black text-white">{user.tokens}</span>
-                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Credits</span>
-             </div>
+            <Zap size={14} className="text-[#ccff00]" fill="currentColor" />
+            <div className="flex flex-col leading-none">
+              <span className="text-sm font-black text-white">{user.tokens}</span>
+              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Credits</span>
+            </div>
           </div>
           <div className="relative group">
             <button onClick={() => setShowPaywall(true)} className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-sm font-black hover:scale-105 transition-all shadow-lg active:scale-95">
@@ -249,13 +220,13 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               </div>
             ) : !originalImage ? (
               <div onClick={() => fileInputRef.current?.click()} className="group w-full aspect-video rounded-[40px] border-4 border-dashed border-white/10 hover:border-[#ccff00]/50 transition-all flex flex-col items-center justify-center cursor-pointer bg-[#151925]/50 p-10">
-                 {analyzing ? <Loader2 className="animate-spin text-[#ccff00]" size={48} /> : (
-                   <>
+                {analyzing ? <Loader2 className="animate-spin text-[#ccff00]" size={48} /> : (
+                  <>
                     <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Upload size={40} className="text-slate-500" /></div>
                     <h3 className="text-3xl font-black mb-2">Upload a Photo</h3>
                     <p className="text-slate-500 font-bold">Pick a victim for your next prank</p>
-                   </>
-                 )}
+                  </>
+                )}
               </div>
             ) : (
               <div className="space-y-12 pb-20">
@@ -269,22 +240,22 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
                 {/* CREATIONS LIST */}
                 <div className="space-y-6 pt-10 border-t border-white/5">
-                   <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-black text-white flex items-center gap-3"><HistoryIcon className="text-[#ccff00]" /> {t.your_creations[lang]}</h3>
-                      <span className="text-xs font-bold text-slate-500 bg-white/5 px-3 py-1 rounded-full uppercase tracking-widest">{history.length} Saved</span>
-                   </div>
-                   {history.length === 0 ? (
-                     <div className="py-20 text-center border-2 border-dashed border-white/5 rounded-[30px] bg-white/[0.02] text-slate-600 font-bold">No cursed images yet.</div>
-                   ) : (
-                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {history.map(item => (
-                          <div key={item.id} onClick={() => handleHistoryView(item)} className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/5 cursor-pointer hover:border-[#ccff00] transition-all">
-                             <img src={item.generated} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><Maximize2 className="text-white" /></div>
-                          </div>
-                        ))}
-                     </div>
-                   )}
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-black text-white flex items-center gap-3"><HistoryIcon className="text-[#ccff00]" /> {t.your_creations[lang]}</h3>
+                    <span className="text-xs font-bold text-slate-500 bg-white/5 px-3 py-1 rounded-full uppercase tracking-widest">{history.length} Saved</span>
+                  </div>
+                  {history.length === 0 ? (
+                    <div className="py-20 text-center border-2 border-dashed border-white/5 rounded-[30px] bg-white/[0.02] text-slate-600 font-bold">No cursed images yet.</div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {history.map(item => (
+                        <div key={item.id} onClick={() => handleHistoryView(item)} className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/5 cursor-pointer hover:border-[#ccff00] transition-all">
+                          <img src={item.generated} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><Maximize2 className="text-white" /></div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -294,16 +265,16 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         {/* CONTROLS */}
         <div className="w-full lg:w-[400px] bg-[#151925] border-l border-white/5 flex flex-col">
           <div className="p-6 border-b border-white/5 flex items-center justify-between bg-[#151925]/50 backdrop-blur-sm">
-             <div className="flex items-center gap-2"><Settings2 size={16} className="text-[#ccff00]" /><h2 className="text-xs font-black uppercase tracking-widest text-white">Configuration</h2></div>
-             {originalImage && <button onClick={handleReset} className="text-[10px] font-black text-red-400 flex items-center gap-1 uppercase hover:text-red-300"><RotateCcw size={12} /> Clear</button>}
+            <div className="flex items-center gap-2"><Settings2 size={16} className="text-[#ccff00]" /><h2 className="text-xs font-black uppercase tracking-widest text-white">Configuration</h2></div>
+            {originalImage && <button onClick={handleReset} className="text-[10px] font-black text-red-400 flex items-center gap-1 uppercase hover:text-red-300"><RotateCcw size={12} /> Clear</button>}
           </div>
 
           <div className="flex-1 p-6 space-y-8 overflow-y-auto">
             <div className="space-y-4">
               <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">1. Your Vision</label>
-              <textarea 
-                value={customPrompt} 
-                onChange={e => {setCustomPrompt(e.target.value); setSelectedPresetId(null);}} 
+              <textarea
+                value={customPrompt}
+                onChange={e => { setCustomPrompt(e.target.value); setSelectedPresetId(null); }}
                 placeholder="Turn me into a terrifying zombie..."
                 className="w-full h-32 bg-[#0a0a0e] border border-white/10 rounded-2xl p-4 text-white text-sm focus:border-[#ccff00] transition-all resize-none shadow-inner"
               />
@@ -313,7 +284,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">2. Quick Presets</label>
               <div className="grid grid-cols-2 gap-2">
                 {PRESETS.map(p => (
-                  <button key={p.id} onClick={() => {setCustomPrompt(p.prompt); setSelectedPresetId(p.id);}} className={`p-4 rounded-xl border text-left transition-all ${selectedPresetId === p.id ? 'bg-[#ccff00] text-black border-transparent' : 'bg-[#1E2332] border-white/5 text-white hover:border-white/10'}`}>
+                  <button key={p.id} onClick={() => { setCustomPrompt(p.prompt); setSelectedPresetId(p.id); }} className={`p-4 rounded-xl border text-left transition-all ${selectedPresetId === p.id ? 'bg-[#ccff00] text-black border-transparent' : 'bg-[#1E2332] border-white/5 text-white hover:border-white/10'}`}>
                     <span className="text-2xl mb-2 block">{p.icon}</span>
                     <span className="text-[10px] font-black uppercase tracking-widest leading-none">{p.label[lang]}</span>
                   </button>
@@ -329,12 +300,12 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <button onClick={() => handleShare(generatedImage)} className="py-4 bg-[#1E2332] text-white rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 border border-white/10 hover:bg-[#252a3b] transition-colors"><Share2 size={14} /> Share</button>
               </div>
             )}
-            <button 
-              onClick={handleGenerate} 
-              disabled={isGenerating || !originalImage || !customPrompt} 
+            <button
+              onClick={handleGenerate}
+              disabled={isGenerating || !originalImage || !customPrompt}
               className={`w-full py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 shadow-xl transition-all active:scale-[0.98] ${isGenerating || !originalImage || !customPrompt ? 'bg-slate-800 text-slate-600 cursor-not-allowed opacity-50' : 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[#ccff00]/10'}`}
             >
-               {isGenerating ? <Loader2 className="animate-spin" /> : <><Zap size={22} fill="currentColor" /> {t.generate_btn[lang]}</>}
+              {isGenerating ? <Loader2 className="animate-spin" /> : <><Zap size={22} fill="currentColor" /> {t.generate_btn[lang]}</>}
             </button>
             <p className="text-center text-[10px] text-slate-500 font-black uppercase tracking-widest opacity-80">{t.cost_hint[lang]}</p>
           </div>
