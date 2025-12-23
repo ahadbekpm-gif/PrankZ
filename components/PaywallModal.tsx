@@ -58,10 +58,16 @@ const PaywallModal: React.FC<PaywallProps> = ({ isOpen, onClose, lang, onPurchas
             <div
               key={plan.id}
               className={`relative flex flex-col p-5 sm:p-6 rounded-[24px] sm:rounded-[32px] border transition-all duration-300 group hover:scale-[1.05] cursor-pointer ${plan.popular
-                  ? 'bg-[#151925] border-[#ccff00]/30 shadow-[0_15px_30px_rgba(204,255,0,0.15)] z-20 scale-105'
-                  : 'bg-[#0f1119] border-white/5 hover:border-white/10 z-10'
+                ? 'bg-[#151925] border-[#ccff00]/30 shadow-[0_15px_30px_rgba(204,255,0,0.15)] z-20 scale-105'
+                : 'bg-[#0f1119] border-white/5 hover:border-white/10 z-10'
                 }`}
-              onClick={() => onPurchase(plan.id as PlanType, plan.tokens)}
+              onClick={() => {
+                if ((plan as any).link) {
+                  window.open((plan as any).link, '_blank');
+                } else {
+                  onPurchase(plan.id as PlanType, plan.tokens);
+                }
+              }}
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#ccff00] text-black text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-lg z-30 animate-bounce">
@@ -88,8 +94,8 @@ const PaywallModal: React.FC<PaywallProps> = ({ isOpen, onClose, lang, onPurchas
               </div>
 
               <button className={`w-full mt-5 sm:mt-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 ${plan.popular
-                  ? 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[#ccff00]/20'
-                  : 'bg-[#1E2332] text-white hover:bg-[#252a3b]'
+                ? 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[#ccff00]/20'
+                : 'bg-[#1E2332] text-white hover:bg-[#252a3b]'
                 }`}>
                 {plan.popular ? 'Upgrade & Ruin Photos' : 'Select Plan'}
               </button>

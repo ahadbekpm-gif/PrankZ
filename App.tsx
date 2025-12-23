@@ -8,10 +8,12 @@ import {
 } from 'lucide-react';
 import { TRANSLATIONS, PRICING_PLANS, EXAMPLES, PRESETS } from './constants';
 import { Language, AppStep, UserState, PlanType, Preset, HistoryItem } from './types';
+import { supabase } from './services/supabase'; // Import Supabase
 import { transformImage } from './services/geminiService';
 import BeforeAfterSlider from './components/BeforeAfterSlider';
 import PaywallModal from './components/PaywallModal';
 import LandingPage from './components/LandingPage';
+import AuthModal from './components/AuthModal';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -24,9 +26,6 @@ const captureVideoFrame = (video: HTMLVideoElement): string => {
   ctx?.drawImage(video, 0, 0);
   return canvas.toDataURL('image/jpeg');
 };
-
-// --- LANDING PAGE ---
-// Old LandingPage component removed. Now using components/LandingPage.tsx
 
 // --- EDITOR APP ---
 const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
@@ -48,6 +47,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false); // Auth Modal State
   const [loadingMessage, setLoadingMessage] = useState('');
   const [fakeProgress, setFakeProgress] = useState(0);
 
@@ -58,6 +58,48 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const t = TRANSLATIONS;
+  const [session, setSession] = useState<any>(null);
+
+  // Fetch profile from Supabase
+  const fetchProfile = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.warn('Error fetching profile:', error);
+      }
+
+      if (data) {
+        setUser(prev => ({
+          ...prev,
+          tokens: data.credits,
+          plan: data.plan as PlanType
+        }));
+      }
+    } catch (err) {
+      console.error('Profile fetch error:', err);
+    }
+  };
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (session?.user) fetchProfile(session.user.id);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session?.user) fetchProfile(session.user.id);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('prankz_user', JSON.stringify(user));
@@ -133,7 +175,22 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   const handleGenerate = async () => {
     const cost = selectedPresetId ? PRESETS.find(p => p.id === selectedPresetId)?.cost || 1 : 1;
-    if (user.tokens < cost) {
+    let currentCredits = user.tokens;
+
+    // Strict DB Check if logged in
+    if (session?.user) {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('credits')
+        .eq('id', session.user.id)
+        .single();
+
+      if (error || !data || data.credits < cost) {
+        setShowPaywall(true);
+        return;
+      }
+      currentCredits = data.credits;
+    } else if (user.tokens < cost) {
       setShowPaywall(true);
       return;
     }
@@ -155,11 +212,27 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       };
 
       setHistory(prev => [newHistoryItem, ...prev]);
-      setUser(prev => ({ ...prev, tokens: Math.max(0, prev.tokens - cost) }));
+
+      // Deduct from the FRESH fetched value (or local if not logged in)
+      const newTokens = Math.max(0, currentCredits - cost);
+
+      // Update local state
+      setUser(prev => ({ ...prev, tokens: newTokens }));
+
+      // Update Supabase if logged in
+      if (session?.user) {
+        supabase.from('profiles')
+          .update({ credits: newTokens })
+          .eq('id', session.user.id)
+          .then(({ error }) => {
+            if (error) console.error('Error updating credits:', error);
+          });
+      }
+
       setStep('result');
 
       // Trigger paywall if out of tokens (after small delay to see result)
-      if (user.tokens - cost <= 0) {
+      if (newTokens <= 0) {
         setTimeout(() => setShowPaywall(true), 2000);
       }
     } catch (err: any) {
@@ -171,12 +244,30 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   };
 
   const handlePurchase = (plan: PlanType, tokens: number) => {
+    const newTokens = user.tokens + tokens;
+    const newPlanExpiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
+
+    // Update local state
     setUser(prev => ({
       ...prev,
       plan,
-      tokens: prev.tokens + tokens,
-      planExpiry: Date.now() + (30 * 24 * 60 * 60 * 1000)
+      tokens: newTokens,
+      planExpiry: newPlanExpiry
     }));
+
+    // Update Supabase if logged in
+    if (session?.user) {
+      supabase.from('profiles')
+        .update({
+          credits: newTokens,
+          plan: plan
+        })
+        .eq('id', session.user.id)
+        .then(({ error }) => {
+          if (error) console.error('Error updating purchase:', error);
+        });
+    }
+
     setShowPaywall(false);
   };
 
@@ -228,8 +319,20 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     }
   };
 
+
+
+
+  const handleLogin = async () => {
+    setShowAuthModal(true);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#050511] font-sans">
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
       {/* RESTORED HEADER */}
       <header className="sticky top-0 z-[60] w-full border-b border-white/5 bg-[#050511]/90 backdrop-blur-xl h-20 flex justify-between items-center px-6">
         <div className="flex items-center gap-3 cursor-pointer group hover:animate-glitch" onClick={onBack}>
@@ -241,13 +344,20 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         </div>
 
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-3 px-4 py-2 bg-[#1E2332] rounded-full border border-white/5 shadow-inner">
-            <Zap size={14} className="text-[#ccff00]" fill="currentColor" />
-            <div className="flex flex-col leading-none">
-              <span className="text-sm font-black text-white">{user.tokens}</span>
-              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Credits</span>
+          {!session ? (
+            <button onClick={handleLogin} className="text-xs font-bold text-white hover:text-[#ccff00] uppercase tracking-widest">
+              Login
+            </button>
+          ) : (
+            <div className="flex items-center gap-3 px-4 py-2 bg-[#1E2332] rounded-full border border-white/5 shadow-inner">
+              <Zap size={14} className="text-[#ccff00]" fill="currentColor" />
+              <div className="flex flex-col leading-none">
+                <span className="text-sm font-black text-white">{user.tokens}</span>
+                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Credits</span>
+              </div>
             </div>
-          </div>
+          )}
+
           <div className="relative group">
             <button onClick={() => setShowPaywall(true)} className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-sm font-black hover:scale-105 transition-all shadow-lg active:scale-95">
               <Crown size={14} fill="white" />
@@ -257,6 +367,12 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               Unlock 80 images/month
             </div>
           </div>
+
+          {session && (
+            <button onClick={handleLogout} className="text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest">
+              Logout
+            </button>
+          )}
         </div>
       </header>
 
@@ -424,12 +540,43 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <div className="space-y-4">
               <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">2. Choose Your Chaos</label>
               <div className="grid grid-cols-2 gap-2">
-                {PRESETS.map(p => (
-                  <button key={p.id} onClick={() => { setCustomPrompt(p.prompt); setSelectedPresetId(p.id); }} className={`p-4 rounded-xl border text-left transition-all hover:animate-shake ${selectedPresetId === p.id ? 'bg-[#ccff00] text-black border-transparent' : 'bg-[#1E2332] border-white/5 text-white hover:border-white/10'}`}>
-                    <span className="text-2xl mb-2 block">{p.icon}</span>
-                    <span className="text-[10px] font-black uppercase tracking-widest leading-none">{p.label[lang]}</span>
-                  </button>
-                ))}
+                {PRESETS.map(p => {
+                  const isLocked = p.premium && user.plan === 'free';
+                  return (
+                    <button
+                      key={p.id}
+                      onClick={() => {
+                        if (isLocked) {
+                          setShowPaywall(true);
+                        } else {
+                          setCustomPrompt(p.prompt);
+                          setSelectedPresetId(p.id);
+                        }
+                      }}
+                      className={`relative p-4 rounded-xl border text-left transition-all hover:animate-shake overflow-hidden
+                        ${selectedPresetId === p.id
+                          ? 'bg-[#ccff00] text-black border-transparent'
+                          : isLocked
+                            ? 'bg-[#1E2332]/50 border-white/5 text-slate-500 hover:border-white/10'
+                            : 'bg-[#1E2332] border-white/5 text-white hover:border-white/10'
+                        }`}
+                    >
+                      {isLocked && (
+                        <div className="absolute top-2 right-2 z-10">
+                          <Lock size={12} className="text-slate-500" />
+                        </div>
+                      )}
+                      {p.premium && !isLocked && (
+                        <div className="absolute top-2 right-2 z-10">
+                          <Crown size={12} className="text-[#FFD700]" fill="currentColor" />
+                        </div>
+                      )}
+                      <span className={`text-2xl mb-2 block ${isLocked ? 'grayscale opacity-50' : ''}`}>{p.icon}</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest leading-none">{p.label[lang]}</span>
+                      {isLocked && <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

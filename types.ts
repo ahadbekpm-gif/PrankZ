@@ -15,6 +15,7 @@ export interface Preset {
   icon: string;
   cost: number;
   popular?: boolean;
+  premium?: boolean;
 }
 
 export interface HistoryItem {

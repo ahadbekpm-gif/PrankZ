@@ -58,7 +58,8 @@ export const PRICING_PLANS = [
     tokens: 20,
     popular: false,
     tag: '(impulse)',
-    color: 'from-blue-500 to-cyan-500'
+    color: 'from-blue-500 to-cyan-500',
+    link: 'https://buy.paddle.com/checkout/...' // Replace with real link
   },
   {
     id: 'monthly',
@@ -67,7 +68,8 @@ export const PRICING_PLANS = [
     tokens: 80,
     popular: true,
     tag: '(BEST VALUE)',
-    color: 'from-purple-600 to-pink-600'
+    color: 'from-purple-600 to-pink-600',
+    link: 'https://buy.paddle.com/checkout/...' // Replace with real link
   },
   {
     id: 'yearly',
@@ -76,7 +78,8 @@ export const PRICING_PLANS = [
     tokens: 1000,
     popular: false,
     tag: '(Most chaotic)',
-    color: 'from-yellow-500 to-orange-600'
+    color: 'from-yellow-500 to-orange-600',
+    link: 'https://buy.paddle.com/checkout/...' // Replace with real link
   }
 ];
 
@@ -134,7 +137,8 @@ export const PRESETS: Preset[] = [
     prompt: "Cyberpunk 2077 style, neon facial implants, futuristic",
     icon: "🤖",
     cost: 2,
-    popular: true
+    popular: true,
+    premium: true
   },
   {
     id: 'meme',
@@ -162,6 +166,7 @@ export const PRESETS: Preset[] = [
     label: { en: "🤡 Clown World" },
     prompt: "Turn person into a colorful but creepy clown, circus makeup, chaotic energy, cinematic lighting",
     icon: "🤡",
-    cost: 1
+    cost: 1,
+    premium: true
   }
 ];
