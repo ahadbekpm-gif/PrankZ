@@ -289,6 +289,23 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               </div>
             )}
           </div>
+
+          {/* SOCIAL PROOF FOOTER */}
+          <div className="mt-auto pt-20 flex flex-col items-center gap-6 z-10">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-60">
+              <span className="flex items-center gap-2"><Flame size={12} className="text-orange-500" /> 12,403,999 photos ruined</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="flex items-center gap-2"><Brain size={12} className="text-purple-500" /> Powered by AI Chaos Engine</span>
+              <span className="hidden sm:inline">•</span>
+              <span>🚫 Not responsible for group chats</span>
+            </div>
+
+            <div className="text-center animate-in fade-in duration-1000 delay-500">
+              <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity cursor-default">
+                Make memes. Ruin friendships. Repeat.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* CONTROLS */}
@@ -353,21 +370,8 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
         </div>
 
-        {/* SOCIAL PROOF FOOTER */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-60">
-          <span className="flex items-center gap-2"><Flame size={12} className="text-orange-500" /> 12,403,999 photos ruined</span>
-          <span className="hidden sm:inline">•</span>
-          <span className="flex items-center gap-2"><Brain size={12} className="text-purple-500" /> Powered by AI Chaos Engine</span>
-          <span className="hidden sm:inline">•</span>
-          <span>🚫 Not responsible for group chats</span>
-        </div>
-
-        <div className="mt-6 text-center pb-8 animate-in fade-in duration-1000 delay-500">
-          <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity cursor-default">
-            Make memes. Ruin friendships. Repeat.
-          </p>
-        </div>
       </div>
+
 
       <input type="file" ref={fileInputRef} onChange={handleFileUpload} className="hidden" accept="image/*" />
       <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} lang={lang} onPurchase={handlePurchase} />
