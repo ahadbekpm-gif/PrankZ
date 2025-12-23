@@ -4,7 +4,7 @@ import {
   Camera, Upload, RotateCcw, Download, Loader2, Sparkles,
   History as HistoryIcon, X, Image as ImageIcon, Monitor, Zap,
   Skull, Ghost, ArrowRight, CheckCircle2, Flame, Crown,
-  Settings2, Share2, MousePointer2, Star, Trash2, Maximize2, ShieldCheck, Lock, EyeOff, Scale
+  Settings2, Share2, MousePointer2, Star, Trash2, Maximize2, ShieldCheck, Lock, EyeOff, Scale, Brain
 } from 'lucide-react';
 import { TRANSLATIONS, PRICING_PLANS, EXAMPLES, PRESETS } from './constants';
 import { Language, AppStep, UserState, PlanType, Preset, HistoryItem } from './types';
@@ -105,6 +105,11 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       setHistory(prev => [newHistoryItem, ...prev]);
       setUser(prev => ({ ...prev, tokens: Math.max(0, prev.tokens - cost) }));
       setStep('result');
+
+      // Trigger paywall if out of tokens (after small delay to see result)
+      if (user.tokens - cost <= 0) {
+        setTimeout(() => setShowPaywall(true), 2000);
+      }
     } catch (err: any) {
       alert(err.message || "Engine Error");
       setStep('preset');
@@ -219,15 +224,39 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">Calibrating distortions...</p>
               </div>
             ) : !originalImage ? (
-              <div onClick={() => fileInputRef.current?.click()} className="group w-full aspect-video rounded-[40px] border-4 border-dashed border-white/10 hover:border-[#ccff00]/50 transition-all flex flex-col items-center justify-center cursor-pointer bg-[#151925]/50 p-10">
-                {analyzing ? <Loader2 className="animate-spin text-[#ccff00]" size={48} /> : (
-                  <>
-                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Upload size={40} className="text-slate-500" /></div>
-                    <h3 className="text-3xl font-black mb-2">Upload a Photo</h3>
-                    <p className="text-slate-500 font-bold">Pick a victim for your next prank</p>
-                  </>
-                )}
-              </div>
+              <>
+                <div className="relative w-full max-w-2xl mx-auto mb-8 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-200 z-20">
+                  <div className="absolute left-1/2 -translate-x-1/2 -top-6 bg-[#ccff00] text-black px-6 py-2 rounded-full font-black text-xs uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(204,255,0,0.6)] flex items-center gap-2 whitespace-nowrap z-30 animate-bounce">
+                    <div className="w-2 h-2 bg-black rounded-full animate-ping"></div>
+                    FREE TRIAL: 1 Chaos Credit
+                  </div>
+                </div>
+
+                <div onClick={() => fileInputRef.current?.click()} className="group w-full max-w-2xl mx-auto rounded-[3rem] border-4 border-dashed border-white/10 hover:border-[#ccff00] hover:bg-[#ccff00]/5 transition-all duration-500 flex flex-col items-center justify-center cursor-pointer bg-[#151925]/30 p-12 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+                  {analyzing ? <Loader2 className="animate-spin text-[#ccff00]" size={48} /> : (
+                    <>
+                      <div className="w-24 h-24 rounded-full bg-[#ccff00] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-[0_0_30px_rgba(204,255,0,0.3)]">
+                        <Upload size={40} className="text-black" />
+                      </div>
+                      <h3 className="text-5xl md:text-6xl font-black mb-4 tracking-tighter italic text-center">
+                        Drop a Photo. <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] to-green-400">Ruin It.</span>
+                      </h3>
+                      <p className="text-slate-400 font-bold text-lg text-center max-w-md">
+                        First chaos is free. <span className="text-white">No mercy after 😈</span>
+                      </p>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                      />
+                    </>
+                  )}
+                </div>
+              </>
             ) : (
               <div className="space-y-12 pb-20">
                 <div className="relative rounded-[40px] overflow-hidden shadow-2xl border border-white/10 bg-[#050511]">
@@ -265,26 +294,26 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         {/* CONTROLS */}
         <div className="w-full lg:w-[400px] bg-[#151925] border-l border-white/5 flex flex-col">
           <div className="p-6 border-b border-white/5 flex items-center justify-between bg-[#151925]/50 backdrop-blur-sm">
-            <div className="flex items-center gap-2"><Settings2 size={16} className="text-[#ccff00]" /><h2 className="text-xs font-black uppercase tracking-widest text-white">Configuration</h2></div>
-            {originalImage && <button onClick={handleReset} className="text-[10px] font-black text-red-400 flex items-center gap-1 uppercase hover:text-red-300"><RotateCcw size={12} /> Clear</button>}
+            <div className="flex items-center gap-2"><Settings2 size={16} className="text-[#ccff00]" /><h2 className="text-xs font-black uppercase tracking-widest text-white">The Lab</h2></div>
+            {originalImage && <button onClick={handleReset} className="text-[10px] font-black text-red-400 flex items-center gap-1 uppercase hover:text-red-300"><RotateCcw size={12} /> Nuke It</button>}
           </div>
 
           <div className="flex-1 p-6 space-y-8 overflow-y-auto">
             <div className="space-y-4">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">1. Your Vision</label>
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">1. Explain the Prank</label>
               <textarea
                 value={customPrompt}
                 onChange={e => { setCustomPrompt(e.target.value); setSelectedPresetId(null); }}
-                placeholder="Turn me into a terrifying zombie..."
+                placeholder="Make him look like he hasn't slept in 40 years..."
                 className="w-full h-32 bg-[#0a0a0e] border border-white/10 rounded-2xl p-4 text-white text-sm focus:border-[#ccff00] transition-all resize-none shadow-inner"
               />
             </div>
 
             <div className="space-y-4">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">2. Quick Presets</label>
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">2. Choose Your Chaos</label>
               <div className="grid grid-cols-2 gap-2">
                 {PRESETS.map(p => (
-                  <button key={p.id} onClick={() => { setCustomPrompt(p.prompt); setSelectedPresetId(p.id); }} className={`p-4 rounded-xl border text-left transition-all ${selectedPresetId === p.id ? 'bg-[#ccff00] text-black border-transparent' : 'bg-[#1E2332] border-white/5 text-white hover:border-white/10'}`}>
+                  <button key={p.id} onClick={() => { setCustomPrompt(p.prompt); setSelectedPresetId(p.id); }} className={`p-4 rounded-xl border text-left transition-all hover:animate-shake ${selectedPresetId === p.id ? 'bg-[#ccff00] text-black border-transparent' : 'bg-[#1E2332] border-white/5 text-white hover:border-white/10'}`}>
                     <span className="text-2xl mb-2 block">{p.icon}</span>
                     <span className="text-[10px] font-black uppercase tracking-widest leading-none">{p.label[lang]}</span>
                   </button>
@@ -303,12 +332,40 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <button
               onClick={handleGenerate}
               disabled={isGenerating || !originalImage || !customPrompt}
-              className={`w-full py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 shadow-xl transition-all active:scale-[0.98] ${isGenerating || !originalImage || !customPrompt ? 'bg-slate-800 text-slate-600 cursor-not-allowed opacity-50' : 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[#ccff00]/10'}`}
+              className={`w-full py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 shadow-xl transition-all active:scale-[0.98] relative overflow-hidden group ${isGenerating || !originalImage || !customPrompt
+                ? 'bg-slate-800 text-slate-600 cursor-not-allowed opacity-50'
+                : user.tokens < (selectedPresetId ? PRESETS.find(p => p.id === selectedPresetId)?.cost || 1 : 1)
+                  ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-red-500/20'
+                  : 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[0_0_30px_rgba(204,255,0,0.4)] animate-pulse hover:animate-none'
+                }`}
             >
-              {isGenerating ? <Loader2 className="animate-spin" /> : <><Zap size={22} fill="currentColor" /> {t.generate_btn[lang]}</>}
+              {isGenerating ? (
+                <Loader2 className="animate-spin" />
+              ) : user.tokens < (selectedPresetId ? PRESETS.find(p => p.id === selectedPresetId)?.cost || 1 : 1) ? (
+                <><Lock size={22} /> 🔒 Upgrade to Keep the Chaos Going</>
+              ) : (
+                <><Zap size={22} fill="currentColor" /> ⚡ Generate Chaos</>
+              )}
             </button>
-            <p className="text-center text-[10px] text-slate-500 font-black uppercase tracking-widest opacity-80">{t.cost_hint[lang]}</p>
+            <p className="text-center text-[10px] text-slate-500 font-black uppercase tracking-widest opacity-80">
+              Uses {selectedPresetId ? PRESETS.find(p => p.id === selectedPresetId)?.cost || 1 : 1} credit • ~15–30 seconds • worth it
+            </p>
           </div>
+        </div>
+
+        {/* SOCIAL PROOF FOOTER */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-60">
+          <span className="flex items-center gap-2"><Flame size={12} className="text-orange-500" /> 12,403,999 photos ruined</span>
+          <span className="hidden sm:inline">•</span>
+          <span className="flex items-center gap-2"><Brain size={12} className="text-purple-500" /> Powered by AI Chaos Engine</span>
+          <span className="hidden sm:inline">•</span>
+          <span>🚫 Not responsible for group chats</span>
+        </div>
+
+        <div className="mt-6 text-center pb-8 animate-in fade-in duration-1000 delay-500">
+          <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity cursor-default">
+            Make memes. Ruin friendships. Repeat.
+          </p>
         </div>
       </div>
 

@@ -24,7 +24,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             {/* NAVBAR */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050511]/80 backdrop-blur-md border-b border-white/5">
                 <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-                    <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                    <div className="flex items-center gap-2 group cursor-pointer hover:animate-glitch" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                         <div className="w-8 h-8 bg-[#ccff00] rounded-lg flex items-center justify-center border-2 border-black -rotate-6 group-hover:rotate-0 transition-transform duration-300">
                             <Ghost className="text-black w-5" />
                         </div>
@@ -32,9 +32,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                     </div>
                     <button
                         onClick={onStart}
-                        className="px-6 py-2 rounded-full bg-[#ccff00] text-black text-sm font-bold hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.3)] hover:shadow-[0_0_25px_rgba(204,255,0,0.5)] hover:scale-105 active:scale-95"
+                        className="px-6 py-2 rounded-full bg-[#ccff00] text-black text-sm font-black uppercase tracking-widest hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.3)] hover:shadow-[0_0_25px_rgba(204,255,0,0.5)] hover:scale-105 active:scale-95"
                     >
-                        Get Started
+                        Go Wild 😈
                     </button>
                 </div>
             </nav>
@@ -52,12 +52,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                     <div className="flex-1 text-center lg:text-left space-y-8">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-5 duration-700 hover:bg-white/10 transition-colors cursor-default">
                             <Star size={14} className="text-[#ccff00] fill-[#ccff00]" />
-                            <span className="text-xs font-bold uppercase tracking-widest text-slate-300">Rated #1 Prank App of 2024</span>
+                            <span className="text-xs font-bold uppercase tracking-widest text-slate-300">Rated #1 Tool for Ruining Friendships</span>
                         </div>
 
                         <h1 className="text-5xl sm:text-7xl font-black leading-[1.1] tracking-tighter animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
                             Turn Normal Photos Into <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-green-400 to-purple-500 italic">Absolute Chaos in Seconds.</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-green-400 to-purple-500 italic">Pure, Unfiltered Nightmare Fuel.</span>
                         </h1>
 
                         <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
@@ -72,10 +72,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                                 onClick={onStart}
                                 className="w-full sm:w-auto px-8 py-4 bg-[#ccff00] text-black text-lg font-black rounded-2xl hover:bg-[#b3e600] hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(204,255,0,0.3)] flex items-center justify-center gap-3"
                             >
-                                <Zap size={20} fill="black" /> Start Pranking (Free)
+                                <Zap size={20} fill="black" /> Start the Chaos (Free)
                             </button>
                             <span className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                                <CheckCircle2 size={14} /> No login required. First prank is free.
+                                <CheckCircle2 size={14} /> No login. No mercy. First one's on us.
                             </span>
                         </div>
                     </div>
@@ -138,14 +138,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                         {[
                             {
                                 icon: <Skull size={32} />,
-                                title: 'Cursed Filters',
-                                desc: 'Make anyone look deeply untrustworthy.',
+                                title: 'Meme Weaponry',
+                                desc: 'Turn friends into viral victims.',
                                 color: 'bg-red-500'
                             },
                             {
                                 icon: <MessageSquare size={32} />,
-                                title: 'Fake Chat Generator',
-                                desc: 'Create fake receipts. Ruin friendships.',
+                                title: 'Social Sabotage',
+                                desc: 'Perfect for the group chat roast.',
                                 color: 'bg-blue-500'
                             },
                             {

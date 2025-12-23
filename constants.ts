@@ -16,9 +16,9 @@ export const TRANSLATIONS: Translation = {
   prompt_placeholder: {
     en: "Turn me into a zombie in a dark alley, cinematic lighting, ultra realistic...",
   },
-  premium_modal_title: { en: "Choose a Plan" },
+  premium_modal_title: { en: "You’ve Started Something Dangerous 😈" },
   premium_desc: {
-    en: "Unlock more generations and high-quality results!",
+    en: "Your free chaos credit is gone.\nWant unlimited damage?",
   },
   your_creations: { en: "Your Creations" },
   no_history: { en: "No creations yet" },
@@ -53,26 +53,29 @@ export const TRANSLATIONS: Translation = {
 export const PRICING_PLANS = [
   {
     id: 'weekly',
-    name: 'Weekly',
+    name: '⚡ Weekly',
     price: '$2.99',
     tokens: 20,
     popular: false,
+    tag: '(impulse)',
     color: 'from-blue-500 to-cyan-500'
   },
   {
     id: 'monthly',
-    name: 'Monthly',
+    name: '🔥 Monthly',
     price: '$7.99',
     tokens: 80,
     popular: true,
+    tag: '(BEST VALUE)',
     color: 'from-purple-600 to-pink-600'
   },
   {
     id: 'yearly',
-    name: 'Yearly',
+    name: '💀 Yearly',
     price: '$59.99',
     tokens: 1000,
     popular: false,
+    tag: '(Most chaotic)',
     color: 'from-yellow-500 to-orange-600'
   }
 ];
@@ -119,7 +122,7 @@ export const EXAMPLES = [
 export const PRESETS: Preset[] = [
   {
     id: 'zombie',
-    label: { en: "Zombie" },
+    label: { en: "🧟 Zombie Apocalypse" },
     prompt: "Zombie apocalypse survivor, decayed skin, horror style",
     icon: "🧟",
     cost: 1,
@@ -127,38 +130,31 @@ export const PRESETS: Preset[] = [
   },
   {
     id: 'cyberpunk',
-    label: { en: "Cyberpunk" },
+    label: { en: "🤖 Main Character Energy" },
     prompt: "Cyberpunk 2077 style, neon facial implants, futuristic",
     icon: "🤖",
-    cost: 1,
+    cost: 2,
     popular: true
   },
   {
     id: 'meme',
-    label: { en: "Meme Style" },
-    prompt: "Classic viral internet meme aesthetic, funny reaction face",
+    label: { en: "😂 Instant Meme" },
+    prompt: "Classic viral internet meme aesthetic, funny reaction face, deep fried",
     icon: "😂",
     cost: 1
   },
   {
     id: 'old',
-    label: { en: "80 Years Old" },
-    prompt: "Realistic aging, deep wrinkles, 80 years old",
+    label: { en: "👴 Future You (Cursed)" },
+    prompt: "Realistic aging, deep wrinkles, 90 years old, ancient",
     icon: "👴",
     cost: 1
   },
   {
     id: 'glitch',
-    label: { en: "Glitch Art" },
-    prompt: "Vibrant glitch art style, digital distortion, neon colors",
+    label: { en: "👾 Reality.exe Broken" },
+    prompt: "Vibrant glitch art style, digital distortion, datamoshing",
     icon: "👾",
-    cost: 1
-  },
-  {
-    id: 'pro',
-    label: { en: "Professional" },
-    prompt: "Hyper-realistic studio portrait, 8k resolution, cinematic lighting",
-    icon: "📸",
     cost: 1
   }
 ];
