@@ -4,8 +4,8 @@ import BeforeAfterSlider from './BeforeAfterSlider';
 
 // Example images for the landing page slider
 // Ideally these should be real examples, but we'll use placeholders or the user's uploaded images if available
-const DEMO_BEFORE = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop";
-const DEMO_AFTER = "https://images.unsplash.com/photo-1620500435451-93e871790403?q=80&w=1000&auto=format&fit=crop"; // Placeholder zombie/glitch effect
+const DEMO_BEFORE = "/hero-before.jpg";
+const DEMO_AFTER = "/hero-after.jpg"; // User provided examples
 
 interface LandingPageProps {
     onStart: () => void;
