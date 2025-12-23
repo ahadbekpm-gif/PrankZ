@@ -55,9 +55,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                             <span className="text-xs font-bold uppercase tracking-widest text-slate-300">Rated #1 Tool for Ruining Friendships</span>
                         </div>
 
-                        <h1 className="text-5xl sm:text-7xl font-black leading-[1.1] tracking-tighter animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+                        <h1 className="text-5xl sm:text-7xl font-black leading-tight tracking-tighter animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100 py-2">
                             Turn Normal Photos Into <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-green-400 to-purple-500 italic">Pure, Unfiltered Nightmare Fuel.</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-green-400 to-purple-500 italic pb-2">Pure, Unfiltered Nightmare Fuel.</span>
                         </h1>
 
                         <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">

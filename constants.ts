@@ -156,5 +156,12 @@ export const PRESETS: Preset[] = [
     prompt: "Vibrant glitch art style, digital distortion, datamoshing",
     icon: "👾",
     cost: 1
+  },
+  {
+    id: 'clown',
+    label: { en: "🤡 Clown World" },
+    prompt: "Turn person into a colorful but creepy clown, circus makeup, chaotic energy, cinematic lighting",
+    icon: "🤡",
+    cost: 1
   }
 ];
