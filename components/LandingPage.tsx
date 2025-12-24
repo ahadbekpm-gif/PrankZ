@@ -1,7 +1,7 @@
 import React from 'react';
 import { Ghost, Zap, Upload, Skull, Share2, Star, ArrowRight, CheckCircle2, MessageSquare, Brain } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import BeforeAfterSlider from './BeforeAfterSlider';
-import LegalModal from './LegalModal';
 import { LegalDocKey } from './LegalContent';
 
 // Example images for the landing page slider
@@ -14,12 +14,9 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
-    const [activeLegal, setActiveLegal] = React.useState<LegalDocKey | null>(null);
 
     return (
         <div className="min-h-screen bg-[#050511] text-white overflow-x-hidden selection:bg-[#ccff00] selection:text-black">
-            {/* LEGAL MODAL */}
-            <LegalModal docKey={activeLegal} onClose={() => setActiveLegal(null)} />
 
             {/* NAVBAR */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050511]/80 backdrop-blur-md border-b border-white/5">
@@ -102,7 +99,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
 
@@ -333,12 +329,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                     </p>
 
                     <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-xs font-bold uppercase tracking-widest text-slate-600">
-                        <button onClick={() => setActiveLegal('privacy')} className="hover:text-[#ccff00] transition-colors">Privacy</button>
-                        <button onClick={() => setActiveLegal('terms')} className="hover:text-[#ccff00] transition-colors">Terms</button>
-                        <button onClick={() => setActiveLegal('refund')} className="hover:text-[#ccff00] transition-colors">Refund</button>
-                        <button onClick={() => setActiveLegal('acceptable_use')} className="hover:text-[#ccff00] transition-colors">Acceptable Use</button>
-                        <button onClick={() => setActiveLegal('disclaimer')} className="hover:text-[#ccff00] transition-colors">Disclaimer</button>
-                        <button onClick={() => setActiveLegal('contact')} className="hover:text-[#ccff00] transition-colors">Contact</button>
+                        <Link to="/privacy" className="hover:text-[#ccff00] transition-colors">Privacy</Link>
+                        <Link to="/terms" className="hover:text-[#ccff00] transition-colors">Terms</Link>
+                        <Link to="/refund" className="hover:text-[#ccff00] transition-colors">Refund</Link>
+                        <Link to="/pricing" className="hover:text-[#ccff00] transition-colors">Pricing</Link>
+                        <Link to="/acceptable-use" className="hover:text-[#ccff00] transition-colors">Acceptable Use</Link>
+                        <Link to="/disclaimer" className="hover:text-[#ccff00] transition-colors">Disclaimer</Link>
+                        <Link to="/contact" className="hover:text-[#ccff00] transition-colors">Contact</Link>
                     </nav>
 
                     <p className="text-[10px] text-slate-700 uppercase tracking-widest">© 2024 Prank-Z. All rights reserved.</p>

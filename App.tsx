@@ -14,6 +14,9 @@ import BeforeAfterSlider from './components/BeforeAfterSlider';
 import PaywallModal from './components/PaywallModal';
 import LandingPage from './components/LandingPage';
 import AuthModal from './components/AuthModal';
+import LegalPage from './components/LegalPage';
+import PricingPage from './components/PricingPage';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -621,10 +624,36 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   );
 };
 
-// --- MAIN APP ---
+
+
+// ... (keep EditorApp and other definitions)
+
+// Wrapper for LandingPage to handle navigation
+const LandingPageWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <LandingPage onStart={() => navigate('/editor')} />;
+};
+
+const EditorAppWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <EditorApp onBack={() => navigate('/')} />;
+};
+
 const App: React.FC = () => {
-  const [view, setView] = useState<'landing' | 'editor'>('landing');
-  return view === 'landing' ? <LandingPage onStart={() => setView('editor')} /> : <EditorApp onBack={() => setView('landing')} />;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPageWrapper />} />
+        <Route path="/editor" element={<EditorAppWrapper />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/privacy" element={<LegalPage docKey="privacy" />} />
+        <Route path="/terms" element={<LegalPage docKey="terms" />} />
+        <Route path="/refund" element={<LegalPage docKey="refund" />} />
+        <Route path="/acceptable-use" element={<LegalPage docKey="acceptable_use" />} />
+        <Route path="*" element={<LandingPageWrapper />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default App;
