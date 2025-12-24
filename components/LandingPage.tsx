@@ -170,6 +170,34 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                 </div>
             </section>
 
+            {/* WHAT YOU GET SECTION */}
+            <section className="py-24 px-6 border-t border-white/5 bg-[#050511] relative overflow-hidden">
+                <div className="absolute inset-0 bg-[#ccff00]/5 pointer-events-none" />
+                <div className="max-w-4xl mx-auto relative z-10">
+                    <h2 className="text-3xl md:text-5xl font-black mb-12 tracking-tighter text-center">
+                        What You <span className="text-[#ccff00]">Get</span>
+                    </h2>
+
+                    <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                        {[
+                            "AI-powered photo transformations",
+                            "Image-to-image editing",
+                            "Access to premium styles",
+                            "Faster generation",
+                            "Commercial & personal use",
+                            "Credit-based usage system"
+                        ].map((item, idx) => (
+                            <div key={idx} className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                <div className="min-w-[24px] h-6 rounded-full bg-[#ccff00] flex items-center justify-center">
+                                    <CheckCircle2 size={14} className="text-black" />
+                                </div>
+                                <span className="font-bold text-lg text-slate-200">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* HOW IT WORKS */}
             <section className="py-32 px-6 border-t border-white/5 bg-[#050511] relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 blur-[100px] rounded-full pointer-events-none" />
