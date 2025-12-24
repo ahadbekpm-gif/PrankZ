@@ -62,6 +62,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const t = TRANSLATIONS;
   const [session, setSession] = useState<any>(null);
+  const navigate = useNavigate();
 
   // Fetch profile from Supabase
   const fetchProfile = async (userId: string) => {
@@ -362,7 +363,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           )}
 
           <div className="relative group">
-            <button onClick={() => setShowPaywall(true)} className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-sm font-black hover:scale-105 transition-all shadow-lg active:scale-95">
+            <button onClick={() => navigate('/pricing')} className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-sm font-black hover:scale-105 transition-all shadow-lg active:scale-95">
               <Crown size={14} fill="white" />
               <span>Upgrade</span>
             </button>
