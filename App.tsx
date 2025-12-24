@@ -651,6 +651,8 @@ const App: React.FC = () => {
         <Route path="/terms" element={<LegalPage docKey="terms" />} />
         <Route path="/refund" element={<LegalPage docKey="refund" />} />
         <Route path="/acceptable-use" element={<LegalPage docKey="acceptable_use" />} />
+        <Route path="/disclaimer" element={<LegalPage docKey="disclaimer" />} />
+        <Route path="/contact" element={<LegalPage docKey="contact" />} />
         <Route path="*" element={<LandingPageWrapper />} />
       </Routes>
     </Router>

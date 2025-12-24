@@ -128,10 +128,10 @@ Violations may result in account suspension or termination.`
         content: `Prank-Z is built for entertainment and humor only. Do not use generated content to deceive, harm, or manipulate others. Use responsibly.`
     },
     contact: {
-        title: "Contact Information",
-        content: `Support Email: **prankz.web@gmail.com**
-
-Website: **Prank-Z**`
+        title: "Contact Us",
+        content: `If you have any questions, concerns, or feedback about Prank-Z, please don't hesitate to reach out to us.
+        
+**Email:** prankz.web@gmail.com`
     }
 };
 
