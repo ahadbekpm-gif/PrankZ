@@ -56,6 +56,8 @@ For privacy-related questions, contact us at: **prankz.web@gmail.com**`
         title: "Terms of Service",
         content: `**Last updated:** December 23, 2024
 
+These Terms & Conditions govern the use of Prank-Z, operated by Ahadbek Axmatqulov (sole proprietor).
+
 By accessing or using **Prank-Z**, you agree to these Terms of Service.
 
 ## 1. Service Description
