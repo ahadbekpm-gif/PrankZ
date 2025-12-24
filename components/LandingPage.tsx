@@ -356,13 +356,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                         <span className="text-xs opacity-50">Legal: If you get fired, that's on you.</span>
                     </p>
 
-                    <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-xs font-bold uppercase tracking-widest text-slate-600">
-                        <Link to="/privacy" className="hover:text-[#ccff00] transition-colors">Privacy</Link>
-                        <Link to="/terms" className="hover:text-[#ccff00] transition-colors">Terms</Link>
-                        <Link to="/refund" className="hover:text-[#ccff00] transition-colors">Refund</Link>
-                        <Link to="/pricing" className="hover:text-[#ccff00] transition-colors">Pricing</Link>
-                        <Link to="/acceptable-use" className="hover:text-[#ccff00] transition-colors">Acceptable Use</Link>
-                        <Link to="/disclaimer" className="hover:text-[#ccff00] transition-colors">Disclaimer</Link>
+                    <nav className="flex flex-wrap justify-center gap-4 text-xs font-bold uppercase tracking-widest text-slate-600">
+                        <Link to="/privacy" className="hover:text-[#ccff00] transition-colors">Privacy Policy</Link>
+                        <span className="opacity-50">·</span>
+                        <Link to="/terms" className="hover:text-[#ccff00] transition-colors">Terms & Conditions</Link>
+                        <span className="opacity-50">·</span>
+                        <Link to="/refund" className="hover:text-[#ccff00] transition-colors">Refund Policy</Link>
+                        <span className="opacity-50">·</span>
                         <Link to="/contact" className="hover:text-[#ccff00] transition-colors">Contact</Link>
                     </nav>
 
