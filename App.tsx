@@ -9,7 +9,7 @@ import {
 import { TRANSLATIONS, PRICING_PLANS, EXAMPLES, PRESETS } from './constants';
 import { Language, AppStep, UserState, PlanType, Preset, HistoryItem } from './types';
 import { supabase } from './services/supabase'; // Import Supabase
-import { transformImage } from './services/geminiService';
+import { transformImage } from './services/imageService';
 import BeforeAfterSlider from './components/BeforeAfterSlider';
 import PaywallModal from './components/PaywallModal';
 import LandingPage from './components/LandingPage';
