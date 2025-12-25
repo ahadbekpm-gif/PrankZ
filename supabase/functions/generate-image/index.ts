@@ -33,15 +33,15 @@ Deno.serve(async (req) => {
 
         console.log(`[DEBUG] Prompt: ${prompt}`);
 
-        // Call Replicate API directly using fetch
-        const response = await fetch("https://api.replicate.com/v1/predictions", {
+        // Call Replicate API directly using fetch (using models endpoint to avoid version issues)
+        const response = await fetch("https://api.replicate.com/v1/models/stability-ai/sdxl/predictions", {
             method: "POST",
             headers: {
                 "Authorization": `Token ${REPLICATE_API_TOKEN}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                version: "39ed526792a6d4647d9867ce42bf7164b542e70625e18c317da23fb946c6d27", // SDXL
+                // version is NOT needed when using the models endpoint
                 input: {
                     prompt: `${prompt} . funny, prank, highly detailed, realistic`,
                     image: image,
