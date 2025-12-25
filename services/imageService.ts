@@ -57,10 +57,15 @@ export const transformImage = async (
     });
 
     if (error) {
+      console.error("Edge Function Invoke Error:", error);
       throw new Error(error.message || 'Failed to invoke generation function');
     }
 
     if (!data.image) {
+      // Check if data contains an error message from the function
+      if (data?.error) {
+        throw new Error(`Generation Failed: ${data.error}`);
+      }
       throw new Error('No image returned from generation service');
     }
 

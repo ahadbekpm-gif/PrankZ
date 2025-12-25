@@ -1,44 +1,58 @@
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+// @ts-ignore
 import Replicate from "npm:replicate"
-
-const REPLICATE_API_TOKEN = Deno.env.get('REPLICATE_API_TOKEN')
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
-    // Handle CORS preflight requests
+// Modern Deno.serve syntax
+Deno.serve(async (req) => {
+    console.log(`[Function Start] Method: ${req.method}`);
+
+    // Handle CORS preflight
     if (req.method === 'OPTIONS') {
         return new Response('ok', { headers: corsHeaders })
     }
 
     try {
-        const { image, prompt } = await req.json()
-
+        const REPLICATE_API_TOKEN = Deno.env.get('REPLICATE_API_TOKEN')
         if (!REPLICATE_API_TOKEN) {
-            throw new Error('Missing REPLICATE_API_TOKEN')
+            console.error("FATAL: REPLICATE_API_TOKEN is missing");
+            throw new Error('Missing Server Configuration (API Key)')
         }
+
+        // Parse Body
+        let body;
+        try {
+            body = await req.json();
+        } catch (e) {
+            console.error("JSON Parse Error:", e);
+            throw new Error("Invalid Request Body");
+        }
+
+        const { image, prompt } = body;
+        console.log("Received Request:", { hasImage: !!image, promptLength: prompt?.length });
 
         if (!image) {
-            throw new Error('Missing image URL')
+            throw new Error('Missing image URL in request')
         }
 
+        // Initialize Replicate
         const replicate = new Replicate({
             auth: REPLICATE_API_TOKEN,
         });
 
-        console.log("Running Replicate with prompt:", prompt);
+        console.log("Calling Replicate API (sdxl)...");
 
         const output = await replicate.run(
             "stability-ai/sdxl:39ed526792a6d4647d9867ce42bf7164b542e70625e18c317da23fb946c6d27",
             {
                 input: {
                     prompt: `${prompt} . funny, prank, highly detailed, realistic`,
-                    image: image, // URL passed from frontend
-                    strength: 0.85, // Creating significant change for "prank" effect
+                    image: image,
+                    strength: 0.85,
                     num_inference_steps: 30,
                     guidance_scale: 7.5,
                     refine: "expert_ensemble_refiner"
@@ -46,10 +60,8 @@ serve(async (req) => {
             }
         );
 
-        console.log("Replicate Output:", output);
+        console.log("Replicate Success:", output);
 
-        // Replicate SDXL output is an array of strings (URLs)
-        // [ "https://replicate.delivery/..." ]
         const resultUrl = Array.isArray(output) ? output[0] : output;
 
         return new Response(
@@ -57,10 +69,13 @@ serve(async (req) => {
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
         )
     } catch (error) {
-        console.error("Functions Error:", error);
+        console.error("Function Error Catch:", error);
         return new Response(
-            JSON.stringify({ error: error.message }),
-            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 },
+            JSON.stringify({ error: error.message || "Unknown Server Error" }),
+            {
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                status: 500
+            },
         )
     }
 })
