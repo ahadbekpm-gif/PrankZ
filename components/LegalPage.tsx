@@ -1,7 +1,13 @@
+import React from 'react';
+import { ShieldCheck, FileText, Mail, Info, CreditCard, ArrowLeft } from 'lucide-react';
+import { LEGAL_CONTENT, LegalDocKey } from './LegalContent';
+import { Link } from 'react-router-dom';
 import { supabase } from '../services/supabase';
 import { useState, useEffect } from 'react';
 
-// ... other imports ...
+interface LegalPageProps {
+    docKey: LegalDocKey;
+}
 
 const LegalPage: React.FC<LegalPageProps> = ({ docKey }) => {
     const { title, content } = LEGAL_CONTENT[docKey];
@@ -13,7 +19,41 @@ const LegalPage: React.FC<LegalPageProps> = ({ docKey }) => {
         });
     }, []);
 
-    // ... renderContent ...
+    // Simple markdown renderer reuse
+    const renderContent = (text: string) => {
+        return text.split('\n').map((line, idx) => {
+            if (line.startsWith('## ')) {
+                return <h3 key={idx} className="text-xl font-bold text-white mt-8 mb-4">{line.replace('## ', '')}</h3>;
+            }
+            if (line.startsWith('* ')) {
+                return (
+                    <li key={idx} className="ml-4 pl-2 text-slate-300 mb-2 list-disc marker:text-[#ccff00]">
+                        {renderLine(line.replace('* ', ''))}
+                    </li>
+                );
+            }
+            if (line.startsWith('# ')) {
+                return <h2 key={idx} className="text-3xl font-black text-white mt-10 mb-6 border-b border-white/10 pb-4">{line.replace('# ', '')}</h2>;
+            }
+            if (line.trim() === '---') {
+                return <hr key={idx} className="border-white/10 my-8" />;
+            }
+            if (line.trim() === '') {
+                return <div key={idx} className="h-4" />;
+            }
+            return <p key={idx} className="text-slate-400 leading-relaxed mb-4 text-lg">{renderLine(line)}</p>;
+        });
+    };
+
+    const renderLine = (text: string) => {
+        const parts = text.split(/(\*\*.*?\*\*)/g);
+        return parts.map((part, i) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+                return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+            }
+            return part;
+        });
+    };
 
     return (
         <div className="min-h-screen bg-[#050511] text-slate-300">
