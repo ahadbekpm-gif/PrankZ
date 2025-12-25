@@ -13,7 +13,8 @@ const DEMO_AFTER = "/hero-after.jpg"; // User provided examples
 import { supabase } from '../services/supabase';
 import AuthModal from './AuthModal';
 import Footer from './Footer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface LandingPageProps {
     onStart: () => void;
@@ -21,6 +22,17 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
     const [showAuthModal, setShowAuthModal] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                navigate('/editor');
+            }
+        };
+        checkUser();
+    }, [navigate]);
 
     const handleLogin = () => {
         setShowAuthModal(true);
