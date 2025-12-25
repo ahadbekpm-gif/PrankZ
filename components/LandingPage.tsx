@@ -24,18 +24,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
     const [showAuthModal, setShowAuthModal] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkUser = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                navigate('/editor');
-            }
-        };
-        checkUser();
-    }, [navigate]);
-
-    const handleLogin = () => {
-        setShowAuthModal(true);
+    const handleLogin = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            navigate('/editor');
+        } else {
+            setShowAuthModal(true);
+        }
     };
 
     return (
