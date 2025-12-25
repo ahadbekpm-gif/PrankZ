@@ -14,6 +14,7 @@ import BeforeAfterSlider from './components/BeforeAfterSlider';
 import PaywallModal from './components/PaywallModal';
 import LandingPage from './components/LandingPage';
 import AuthModal from './components/AuthModal';
+import Footer from './components/Footer';
 import LegalPage from './components/LegalPage';
 import PricingPage from './components/PricingPage';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
@@ -541,6 +542,10 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 Make memes. Ruin friendships. Repeat.
               </p>
             </div>
+          </div>
+
+          <div className="w-full mt-20">
+            <Footer />
           </div>
         </div>
 
