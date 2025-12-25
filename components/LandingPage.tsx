@@ -11,25 +11,27 @@ const DEMO_BEFORE = "/hero-before.jpg";
 const DEMO_AFTER = "/hero-after.jpg"; // User provided examples
 
 import { supabase } from '../services/supabase';
+import AuthModal from './AuthModal';
+import { useState } from 'react';
 
 interface LandingPageProps {
     onStart: () => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
-    const handleLogin = async () => {
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: `${window.location.origin}/editor`
-            }
-        });
-        if (error) console.error('Login error:', error);
+    const handleLogin = () => {
+        setShowAuthModal(true);
     };
 
     return (
         <div className="min-h-screen bg-[#050511] text-white overflow-x-hidden selection:bg-[#ccff00] selection:text-black">
+            <AuthModal
+                isOpen={showAuthModal}
+                onClose={() => setShowAuthModal(false)}
+                onSuccess={onStart}
+            />
 
             {/* NAVBAR */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050511]/80 backdrop-blur-md border-b border-white/5">

@@ -5,10 +5,10 @@ import { X, Mail, Lock, Loader2, Chrome } from 'lucide-react';
 
 interface AuthModalProps {
     isOpen: boolean;
-    onClose: () => void;
+    onSuccess?: () => void;
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
+const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,6 +37,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                     password,
                 });
                 if (error) throw error;
+                if (onSuccess) onSuccess();
                 onClose();
             }
         } catch (err: any) {
@@ -48,7 +49,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
     const handleGoogleLogin = async () => {
         try {
-            const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: `${window.location.origin}/editor`
+                }
+            });
             if (error) throw error;
         } catch (err: any) {
             setError(err.message);
