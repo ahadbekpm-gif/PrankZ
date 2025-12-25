@@ -10,11 +10,23 @@ import { PRICING_PLANS } from '../constants';
 const DEMO_BEFORE = "/hero-before.jpg";
 const DEMO_AFTER = "/hero-after.jpg"; // User provided examples
 
+import { supabase } from '../services/supabase';
+
 interface LandingPageProps {
     onStart: () => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+
+    const handleLogin = async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/editor`
+            }
+        });
+        if (error) console.error('Login error:', error);
+    };
 
     return (
         <div className="min-h-screen bg-[#050511] text-white overflow-x-hidden selection:bg-[#ccff00] selection:text-black">
@@ -33,7 +45,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                             Pricing
                         </Link>
                         <button
-                            onClick={onStart}
+                            onClick={handleLogin}
+                            className="text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-[#ccff00] transition-colors"
+                        >
+                            Login
+                        </button>
+                        <button
+                            onClick={handleLogin}
                             className="px-6 py-2 rounded-full bg-[#ccff00] text-black text-sm font-black uppercase tracking-widest hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.3)] hover:shadow-[0_0_25px_rgba(204,255,0,0.5)] hover:scale-105 active:scale-95"
                         >
                             Go Wild 😈
@@ -72,7 +90,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
                         <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
                             <button
-                                onClick={onStart}
+                                onClick={handleLogin}
                                 className="w-full sm:w-auto px-8 py-4 bg-[#ccff00] text-black text-lg font-black rounded-2xl hover:bg-[#b3e600] hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(204,255,0,0.3)] flex items-center justify-center gap-3"
                             >
                                 <Zap size={20} fill="black" /> Start the Chaos (Free)
@@ -415,7 +433,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
                     <div className="flex flex-col items-center gap-6 mt-12">
                         <button
-                            onClick={onStart}
+                            onClick={handleLogin}
                             className="px-12 py-6 bg-white text-black text-xl md:text-2xl font-black rounded-full hover:bg-[#ccff00] hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(204,255,0,0.5)] flex items-center gap-3"
                         >
                             🚀 Start Editing Now
