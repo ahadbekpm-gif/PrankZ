@@ -1,54 +1,47 @@
 
-// @ts-ignore
-import Replicate from "npm:replicate"
-
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-// Modern Deno.serve syntax
 Deno.serve(async (req) => {
-    console.log(`[Function Start] Method: ${req.method}`);
-
-    // Handle CORS preflight
     if (req.method === 'OPTIONS') {
         return new Response('ok', { headers: corsHeaders })
     }
 
     try {
         const REPLICATE_API_TOKEN = Deno.env.get('REPLICATE_API_TOKEN')
+
+        // Debug Log
+        console.log("[DEBUG] Request received");
+
         if (!REPLICATE_API_TOKEN) {
-            console.error("FATAL: REPLICATE_API_TOKEN is missing");
-            throw new Error('Missing Server Configuration (API Key)')
+            return new Response(
+                JSON.stringify({ success: false, error: 'Missing REPLICATE_API_TOKEN configuration. Please run the secrets set command.' }),
+                { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            )
         }
 
-        // Parse Body
-        let body;
-        try {
-            body = await req.json();
-        } catch (e) {
-            console.error("JSON Parse Error:", e);
-            throw new Error("Invalid Request Body");
-        }
-
-        const { image, prompt } = body;
-        console.log("Received Request:", { hasImage: !!image, promptLength: prompt?.length });
+        const { image, prompt } = await req.json()
 
         if (!image) {
-            throw new Error('Missing image URL in request')
+            return new Response(
+                JSON.stringify({ success: false, error: 'Missing image URL in request body' }),
+                { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            )
         }
 
-        // Initialize Replicate
-        const replicate = new Replicate({
-            auth: REPLICATE_API_TOKEN,
-        });
+        console.log(`[DEBUG] Prompt: ${prompt}`);
 
-        console.log("Calling Replicate API (sdxl)...");
-
-        const output = await replicate.run(
-            "stability-ai/sdxl:39ed526792a6d4647d9867ce42bf7164b542e70625e18c317da23fb946c6d27",
-            {
+        // Call Replicate API directly using fetch
+        const response = await fetch("https://api.replicate.com/v1/predictions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Token ${REPLICATE_API_TOKEN}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                version: "39ed526792a6d4647d9867ce42bf7164b542e70625e18c317da23fb946c6d27", // SDXL
                 input: {
                     prompt: `${prompt} . funny, prank, highly detailed, realistic`,
                     image: image,
@@ -57,24 +50,77 @@ Deno.serve(async (req) => {
                     guidance_scale: 7.5,
                     refine: "expert_ensemble_refiner"
                 }
+            })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`[ERROR] Replicate API Failed: ${response.status} - ${errorText}`);
+            // Return 200 with error details to show in UI
+            return new Response(
+                JSON.stringify({ success: false, error: `Replicate API Error: ${response.status} ${errorText}` }),
+                { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            )
+        }
+
+        const prediction = await response.json();
+        console.log(`[DEBUG] Prediction created: ${prediction.id}`);
+
+        // Poll for completion
+        let result = prediction;
+        let attempts = 0;
+
+        while (result.status !== "succeeded" && result.status !== "failed" && result.status !== "canceled") {
+            if (attempts > 30) { // ~30s timeout
+                return new Response(
+                    JSON.stringify({ success: false, error: "Generation timed out (30s limit)" }),
+                    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+                )
             }
-        );
 
-        console.log("Replicate Success:", output);
+            await new Promise(r => setTimeout(r, 1000));
+            attempts++;
 
-        const resultUrl = Array.isArray(output) ? output[0] : output;
+            const pollResponse = await fetch(result.urls.get, {
+                headers: {
+                    "Authorization": `Token ${REPLICATE_API_TOKEN}`,
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if (!pollResponse.ok) {
+                return new Response(
+                    JSON.stringify({ success: false, error: "Failed to poll prediction status" }),
+                    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+                )
+            }
+
+            result = await pollResponse.json();
+            console.log(`[DEBUG] Poll ${attempts}: ${result.status}`);
+        }
+
+        if (result.status !== "succeeded") {
+            return new Response(
+                JSON.stringify({ success: false, error: `Generation failed: ${result.error || result.status}` }),
+                { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            )
+        }
+
+        const outputUrl = Array.isArray(result.output) ? result.output[0] : result.output;
+        console.log(`[SUCCESS] Output URL: ${outputUrl}`);
 
         return new Response(
-            JSON.stringify({ image: resultUrl }),
+            JSON.stringify({ success: true, image: outputUrl }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
         )
+
     } catch (error) {
-        console.error("Function Error Catch:", error);
+        console.error(`[FATAL] Function Error: ${error.message}`);
+        // Return 200 with error details to show in UI
         return new Response(
-            JSON.stringify({ error: error.message || "Unknown Server Error" }),
+            JSON.stringify({ success: false, error: `Internal Server Error: ${error.message}` }),
             {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-                status: 500
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
             },
         )
     }

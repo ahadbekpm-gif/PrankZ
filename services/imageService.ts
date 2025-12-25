@@ -61,11 +61,12 @@ export const transformImage = async (
       throw new Error(error.message || 'Failed to invoke generation function');
     }
 
+    // New Error Handling: Check for explicit success flag or error field
+    if (data?.success === false || data?.error) {
+      throw new Error(`Generation Error: ${data.error}`);
+    }
+
     if (!data.image) {
-      // Check if data contains an error message from the function
-      if (data?.error) {
-        throw new Error(`Generation Failed: ${data.error}`);
-      }
       throw new Error('No image returned from generation service');
     }
 
