@@ -162,10 +162,31 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  /* 
+   * Enhanced file upload handler with HEIC support
+   */
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setAnalyzing(true);
+
+      let processedFile = file;
+
+      // Handle HEIC/HEIF conversion
+      if (file.type === 'image/heic' || file.type === 'image/heif' || file.name.toLowerCase().endsWith('.heic')) {
+        try {
+          const heic2any = (await import('heic2any')).default;
+          // @ts-ignore
+          const blob = await heic2any({ blob: file, toType: "image/jpeg" });
+          processedFile = Array.isArray(blob) ? blob[0] as File : blob as File;
+        } catch (err) {
+          console.error("HEIC conversion failed:", err);
+          alert("Could not convert HEIC image. Please try a JPEG or PNG.");
+          setAnalyzing(false);
+          return;
+        }
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setOriginalImage(reader.result as string);
@@ -173,7 +194,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         setAnalyzing(false);
         setStep('preset');
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(processedFile);
     }
   };
 
