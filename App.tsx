@@ -56,7 +56,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [step, setStep] = useState<AppStep>('upload');
   const [user, setUser] = useState<UserState>(() => {
     const saved = localStorage.getItem('prankz_user');
-    return saved ? JSON.parse(saved) : { tokens: 1, plan: 'free', planExpiry: null };
+    return saved ? JSON.parse(saved) : { tokens: 0, plan: 'free', planExpiry: null };
   });
   const [history, setHistory] = useState<HistoryItem[]>(() => {
     const saved = localStorage.getItem('prankz_history');
@@ -438,16 +438,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               </div>
             ) : !originalImage ? (
               <>
-                <div className="relative w-full max-w-2xl mx-auto mb-8 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-200 z-20">
-                  <div className="absolute -top-6 left-0 w-full flex justify-center z-30">
-                    <div className="bg-[#ccff00] text-black px-6 py-2 rounded-full font-black text-xs uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(204,255,0,0.6)] flex items-center gap-2 whitespace-nowrap animate-bounce">
-                      <div className="w-2 h-2 bg-black rounded-full animate-ping"></div>
-                      FREE TRIAL: 1 Chaos Credit
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full max-w-2xl mx-auto rounded-[3rem] border-4 border-dashed border-white/10 flex flex-col items-center justify-center bg-[#151925]/30 p-12 relative overflow-hidden">
+                <div className="w-full max-w-2xl mx-auto rounded-[3rem] border-4 border-dashed border-white/10 flex flex-col items-center justify-center bg-[#151925]/30 p-12 relative overflow-hidden mt-20">
                   <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
                   {analyzing ? <Loader2 className="animate-spin text-[#ccff00]" size={48} /> : (
                     <>
@@ -474,7 +465,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                       </div>
 
                       <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mt-8">
-                        First chaos is free. <span className="text-white">No mercy after 😈</span>
+                        Upload your photo to start. <span className="text-white">No mercy 😈</span>
                       </p>
 
                       <input
