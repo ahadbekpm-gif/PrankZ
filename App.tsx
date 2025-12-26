@@ -545,7 +545,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
 
           <div className="w-full mt-20">
-            <Footer />
+            <Footer className="hidden lg:block" />
           </div>
         </div>
 
@@ -642,6 +642,8 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
         </div>
 
+        {/* MOBILE FOOTER (Shown after controls on mobile) */}
+        <Footer className="lg:hidden" />
       </div>
 
 

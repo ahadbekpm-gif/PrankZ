@@ -2,9 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Ghost } from 'lucide-react';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+    className?: string;
+}
+
+const Footer: React.FC<FooterProps> = ({ className = "" }) => {
     return (
-        <footer className="py-12 px-6 border-t border-white/5 bg-[#020205] text-center w-full">
+        <footer className={`py-12 px-6 border-t border-white/5 bg-[#020205] text-center w-full ${className}`}>
             <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
                 <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
                     <Ghost size={20} className="text-white" />
