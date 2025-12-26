@@ -22,8 +22,29 @@ interface LandingPageProps {
 
 const CountUpAnimation: React.FC<{ end: number; duration?: number }> = ({ end, duration = 2000 }) => {
     const [count, setCount] = useState(0);
+    const [hasStarted, setHasStarted] = useState(false);
+    const ref = React.useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !hasStarted) {
+                    setHasStarted(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => observer.disconnect();
+    }, [hasStarted]);
+
+    useEffect(() => {
+        if (!hasStarted) return;
+
         let startTime: number | null = null;
         let animationFrameId: number;
 
@@ -49,9 +70,9 @@ const CountUpAnimation: React.FC<{ end: number; duration?: number }> = ({ end, d
         animationFrameId = requestAnimationFrame(animate);
 
         return () => cancelAnimationFrame(animationFrameId);
-    }, [end, duration]);
+    }, [end, duration, hasStarted]);
 
-    return <>{count.toLocaleString()}</>;
+    return <span ref={ref}>{count.toLocaleString()}</span>;
 };
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
