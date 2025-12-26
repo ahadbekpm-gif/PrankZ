@@ -75,51 +75,49 @@ const PricingPage: React.FC = () => {
                         >
                             {plan.popular && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#ccff00] text-black text-xs font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-lg z-30 animate-bounce">
-                                    {plan.tag.replace(/[()]/g, '') || 'Most Popular'}
+                                    {plan.tag?.replace(/[()]/g, '') || 'Most Popular'}
                                 </div>
                             )}
 
                             <div className="flex-1 space-y-6">
-                                <div className="flex justify-between items-start">
-                                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest">{plan.name}</div>
-                                    {plan.tag && !plan.popular && <div className="text-xs font-bold text-[#ccff00] uppercase tracking-widest opacity-80">{plan.tag}</div>}
+                                <div>
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div className="text-xl font-black text-white uppercase tracking-tighter">{plan.name}</div>
+                                        {plan.tag && !plan.popular && <div className="text-[10px] font-bold text-[#ccff00] uppercase tracking-widest opacity-80">{plan.tag}</div>}
+                                    </div>
+                                    <p className="text-sm font-bold text-slate-400">{plan.description}</p>
                                 </div>
 
-                                <div className="flex flex-col">
+                                <div className="flex flex-col border-b border-white/5 pb-6">
                                     <div className="flex items-end gap-2">
-                                        {(plan as any).originalPrice && (
-                                            <span className="text-lg text-slate-500 line-through font-bold mb-1">{(plan as any).originalPrice}</span>
+                                        {plan.originalPrice && (
+                                            <span className="text-lg text-slate-500 line-through font-bold mb-1">{plan.originalPrice}</span>
                                         )}
                                         <span className="text-5xl font-black text-white tracking-tighter">{plan.price}</span>
-                                        <span className="text-xs text-slate-500 font-bold mb-1 uppercase tracking-wide">{(plan as any).period}</span>
+                                        <span className="text-xs text-slate-500 font-bold mb-2 uppercase tracking-wide">{plan.period}</span>
                                     </div>
                                 </div>
 
-                                <div className="pt-6 space-y-4 border-t border-white/5">
-                                    <div className="flex items-center gap-3 text-[#ccff00]">
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3 text-[#ccff00] mb-4">
                                         <Zap size={20} fill="currentColor" />
                                         <span className="text-xl font-black">{plan.tokens} Credits</span>
                                     </div>
-                                </div>
 
-                                <ul className="space-y-4 pt-4">
-                                    {(plan as any).features?.map((feat: string, i: number) => (
-                                        <li key={i} className="flex items-center gap-3 text-sm font-bold text-slate-300">
-                                            <div className="bg-[#ccff00]/20 p-1 rounded-full text-[#ccff00]"><Check size={12} strokeWidth={4} /></div>
-                                            {feat}
-                                        </li>
-                                    )) || ["HD Results", "No Ads", "Priority Queue", "Premium Styles"].map((feat, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-sm font-bold text-slate-300">
-                                            <div className="bg-[#ccff00]/20 p-1 rounded-full text-[#ccff00]"><Check size={12} strokeWidth={4} /></div>
-                                            {feat}
-                                        </li>
-                                    ))}
-                                </ul>
+                                    <ul className="space-y-3">
+                                        {plan.features.map((feat, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-sm font-bold text-slate-300">
+                                                <div className="mt-0.5 bg-[#ccff00]/20 p-1 rounded-full text-[#ccff00] min-w-[20px] h-[20px] flex items-center justify-center"><Check size={12} strokeWidth={4} /></div>
+                                                <span className="leading-tight">{feat}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
 
-                            <div className="mt-8 pt-6">
+                            <div className="mt-8 pt-6 border-t border-white/5">
                                 <a
-                                    href={(plan as any).link}
+                                    href={plan.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={`w-full py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 ${plan.popular
@@ -129,9 +127,11 @@ const PricingPage: React.FC = () => {
                                 >
                                     {plan.popular ? 'Get Instant Access' : 'Choose Plan'}
                                 </a>
-                                <p className="text-center mt-4 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-                                    Secure payment via Paddle
-                                </p>
+                                {plan.bestFor && (
+                                    <p className="text-center mt-4 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+                                        Best for: <span className="text-slate-300">{plan.bestFor}</span>
+                                    </p>
+                                )}
                             </div>
                         </div>
                     ))}

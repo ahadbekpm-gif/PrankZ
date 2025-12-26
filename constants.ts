@@ -59,34 +59,66 @@ export const PRICING_PLANS = {
       period: '/ month',
       tokens: 30,
       popular: false,
-      tag: '(Impulse Buy)',
+      tag: '',
       color: 'from-blue-500 to-cyan-500',
       link: 'https://buy.paddle.com/checkout/...',
-      features: ["30 credits/images"]
+      description: 'For quick laughs & casual pranks',
+      bestFor: 'first-time users and casual fun',
+      features: [
+        "30 AI prank images per month",
+        "Image-to-image prank generation",
+        "Basic prank styles (Zombie, Meme, Glitch)",
+        "Standard generation speed",
+        "Simple prompt input",
+        "Download generated images",
+        "Personal use only"
+      ]
     },
     {
       id: 'pro_monthly',
-      name: '🔹 Pro',
+      name: '⭐ Pro',
       price: '$19',
       period: '/ month',
       tokens: 80,
       popular: true,
-      tag: '(Best Seller ⭐)',
+      tag: 'Most Popular',
       color: 'from-purple-600 to-pink-600',
       link: 'https://buy.paddle.com/checkout/...',
-      features: ["80 credits/images"]
+      description: 'For creators who prank often',
+      bestFor: 'meme creators, content pages, heavy users',
+      features: [
+        "80 AI prank images per month",
+        "Full prank style library",
+        "Faster image generation",
+        "Advanced prompt control",
+        "High-quality image downloads",
+        "Share-ready output",
+        "Priority over free users",
+        "Personal use"
+      ]
     },
     {
       id: 'unlimited_monthly',
-      name: '🔹 Unlimited*',
+      name: '👑 Power',
       price: '$39',
       period: '/ month',
-      tokens: 150, // Soft cap internal logic should handle this, UI says 150
+      tokens: 150,
       popular: false,
-      tag: '(Soft-Capped)',
+      tag: 'Maximum Chaos',
       color: 'from-yellow-500 to-orange-600',
       link: 'https://buy.paddle.com/checkout/...',
-      features: ["150 images (stated)", "Fair-use policy (≈200/mo)"]
+      description: 'Built for nonstop prank creators',
+      bestFor: 'power users & daily prank content',
+      features: [
+        "150 AI prank images per month",
+        "All prank styles available",
+        "Priority generation speed",
+        "Full prompt control",
+        "High-resolution image downloads",
+        "Priority processing queue",
+        "Fair-use protection",
+        "Unlimited within fair use (150/mo)"
+      ]
     }
   ],
   yearly: [
@@ -95,39 +127,67 @@ export const PRICING_PLANS = {
       name: '🟢 Starter Yearly',
       price: '$59',
       period: '/ year',
-      originalPrice: '$90',
+      originalPrice: '$108', // deduced from 9x12
       tokens: 300,
       popular: false,
-      tag: '',
+      tag: 'Save Big',
       color: 'from-green-500 to-emerald-600',
       link: 'https://buy.paddle.com/checkout/...',
-      features: ["300 credits/images"]
+      description: 'Same fun, lower price',
+      bestFor: 'Casual users who want a year of laughs',
+      features: [
+        "300 AI prank images per year",
+        "Image-to-image prank generation",
+        "Basic prank styles",
+        "Standard generation speed",
+        "Image downloads",
+        "Personal use"
+      ]
     },
     {
       id: 'pro_yearly',
-      name: '🟢 Pro Yearly',
+      name: '🔥 Pro Yearly',
       price: '$89',
       period: '/ year',
-      originalPrice: '$119',
-      tokens: 500,
+      originalPrice: '$228', // deduced from 19x12
+      tokens: 400,
       popular: true,
-      tag: '(BEST DEAL 🔥)',
+      tag: 'BEST DEAL',
       color: 'from-purple-600 to-pink-600',
       link: 'https://buy.paddle.com/checkout/...',
-      features: ["500 credits/images"]
+      description: 'Maximum value for creators',
+      bestFor: 'Creators wanting lowest cost per image',
+      features: [
+        "400 AI prank images per year",
+        "Full prank style library",
+        "Faster image generation",
+        "Advanced prompt control",
+        "High-quality downloads",
+        "Priority queue access"
+      ]
     },
     {
       id: 'unlimited_yearly',
-      name: '🟢 Unlimited Yearly',
+      name: '🟣 Power Yearly',
       price: '$129',
       period: '/ year',
-      originalPrice: '$189',
-      tokens: 700,
+      originalPrice: '$468', // deduced from 39x12
+      tokens: 600,
       popular: false,
-      tag: '',
+      tag: 'All Power',
       color: 'from-yellow-500 to-orange-600',
       link: 'https://buy.paddle.com/checkout/...',
-      features: ["700 credits/images"]
+      description: 'All power, one payment',
+      bestFor: 'Power users committed to chaos',
+      features: [
+        "600 AI prank images per year",
+        "All prank styles unlocked",
+        "Priority generation speed",
+        "Full prompt control",
+        "High-resolution downloads",
+        "Priority processing",
+        "Fair-use protection"
+      ]
     }
   ]
 };

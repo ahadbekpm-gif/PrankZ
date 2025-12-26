@@ -32,4 +32,20 @@ export interface Translation {
   };
 }
 
+export interface PricingPlan {
+  id: string;
+  name: string;
+  price: string;
+  period: string;
+  originalPrice?: string;
+  tokens: number;
+  popular: boolean;
+  tag: string;
+  color: string;
+  link?: string;
+  features: string[];
+  description?: string;
+  bestFor?: string;
+}
+
 export type AppStep = 'upload' | 'preset' | 'generating' | 'result';
