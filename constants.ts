@@ -71,7 +71,8 @@ export const PRICING_PLANS = {
         "Standard generation speed",
         "Simple prompt input",
         "Download generated images",
-        "Personal use only"
+        "Personal use only",
+        "Powered by Nano Banana Pro"
       ]
     },
     {
@@ -94,7 +95,8 @@ export const PRICING_PLANS = {
         "High-quality image downloads",
         "Share-ready output",
         "Priority over free users",
-        "Personal use"
+        "Personal use",
+        "Powered by Nano Banana Pro"
       ]
     },
     {
@@ -117,7 +119,8 @@ export const PRICING_PLANS = {
         "High-resolution image downloads",
         "Priority processing queue",
         "Fair-use protection",
-        "Unlimited within fair use (150/mo)"
+        "Unlimited within fair use (150/mo)",
+        "Powered by Nano Banana Pro"
       ]
     }
   ],
@@ -127,7 +130,7 @@ export const PRICING_PLANS = {
       name: '🟢 Starter Yearly',
       price: '$59',
       period: '/ year',
-      originalPrice: '$108', // deduced from 9x12
+      originalPrice: '$108',
       tokens: 300,
       popular: false,
       tag: 'Save Big',
@@ -141,7 +144,8 @@ export const PRICING_PLANS = {
         "Basic prank styles",
         "Standard generation speed",
         "Image downloads",
-        "Personal use"
+        "Personal use",
+        "Powered by Nano Banana Pro"
       ]
     },
     {
@@ -149,7 +153,7 @@ export const PRICING_PLANS = {
       name: '🔥 Pro Yearly',
       price: '$89',
       period: '/ year',
-      originalPrice: '$228', // deduced from 19x12
+      originalPrice: '$228',
       tokens: 400,
       popular: true,
       tag: 'BEST DEAL',
@@ -163,7 +167,8 @@ export const PRICING_PLANS = {
         "Faster image generation",
         "Advanced prompt control",
         "High-quality downloads",
-        "Priority queue access"
+        "Priority queue access",
+        "Powered by Nano Banana Pro"
       ]
     },
     {
@@ -171,7 +176,7 @@ export const PRICING_PLANS = {
       name: '🟣 Power Yearly',
       price: '$129',
       period: '/ year',
-      originalPrice: '$468', // deduced from 39x12
+      originalPrice: '$468',
       tokens: 600,
       popular: false,
       tag: 'All Power',
@@ -186,7 +191,8 @@ export const PRICING_PLANS = {
         "Full prompt control",
         "High-resolution downloads",
         "Priority processing",
-        "Fair-use protection"
+        "Fair-use protection",
+        "Powered by Nano Banana Pro"
       ]
     }
   ]
