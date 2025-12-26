@@ -43,28 +43,29 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
             {/* NAVBAR */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050511]/80 backdrop-blur-md border-b border-white/5">
-                <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+                <div className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-7xl mx-auto">
                     <div className="flex items-center gap-2 group cursor-pointer hover:animate-glitch" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center -rotate-6 group-hover:rotate-0 transition-transform duration-300 overflow-hidden border-2 border-[#ccff00]">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center -rotate-6 group-hover:rotate-0 transition-transform duration-300 overflow-hidden border-2 border-[#ccff00]">
                             <img src="/logo.jpg" alt="Prank-Z" className="w-full h-full object-cover" />
                         </div>
-                        <span className="text-xl font-black tracking-tighter">Prank-Z</span>
+                        <span className="text-lg sm:text-xl font-black tracking-tighter">Prank-Z</span>
                     </div>
-                    <div className="flex items-center gap-6">
-                        <Link to="/pricing" className="text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-[#ccff00] transition-colors">
+                    <div className="flex items-center gap-3 sm:gap-6">
+                        <Link to="/pricing" className="hidden sm:block text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-[#ccff00] transition-colors">
                             Pricing
                         </Link>
                         <button
                             onClick={handleLogin}
-                            className="text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-[#ccff00] transition-colors"
+                            className="hidden sm:block text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-[#ccff00] transition-colors"
                         >
                             Login
                         </button>
                         <button
                             onClick={handleLogin}
-                            className="px-6 py-2 rounded-full bg-[#ccff00] text-black text-sm font-black uppercase tracking-widest hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.3)] hover:shadow-[0_0_25px_rgba(204,255,0,0.5)] hover:scale-105 active:scale-95"
+                            className="px-4 py-2 sm:px-6 sm:py-2 rounded-full bg-[#ccff00] text-black text-xs sm:text-sm font-black uppercase tracking-widest hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.3)] hover:shadow-[0_0_25px_rgba(204,255,0,0.5)] hover:scale-105 active:scale-95"
                         >
-                            Go Wild 😈
+                            <span className="sm:hidden">Start</span>
+                            <span className="hidden sm:inline">Go Wild 😈</span>
                         </button>
                     </div>
                 </div>

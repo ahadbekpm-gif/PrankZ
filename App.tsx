@@ -360,33 +360,33 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     <div className="min-h-screen flex flex-col bg-[#050511] font-sans">
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
       {/* RESTORED HEADER */}
-      <header className="sticky top-0 z-[60] w-full border-b border-white/5 bg-[#050511]/90 backdrop-blur-xl h-20 flex justify-between items-center px-6">
+      <header className="sticky top-0 z-[60] w-full border-b border-white/5 bg-[#050511]/90 backdrop-blur-xl h-16 sm:h-20 flex justify-between items-center px-4 sm:px-6">
         <div className="flex items-center gap-3 cursor-pointer group hover:animate-glitch" onClick={onBack}>
-          <div className="w-10 h-10 rounded-xl bg-[#ccff00] flex items-center justify-center shadow-lg overflow-hidden border-2 border-black"><img src="/logo.jpg" alt="Prank-Z" className="w-full h-full object-cover" /></div>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#ccff00] flex items-center justify-center shadow-lg overflow-hidden border-2 border-black"><img src="/logo.jpg" alt="Prank-Z" className="w-full h-full object-cover" /></div>
           <div>
-            <h1 className="text-xl font-bold text-white leading-none">Prank-Z</h1>
-            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">AI Chaos Engine</span>
+            <h1 className="text-lg sm:text-xl font-bold text-white leading-none">Prank-Z</h1>
+            <span className="hidden sm:block text-[9px] font-black text-slate-500 uppercase tracking-widest">AI Chaos Engine</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
           {!session ? (
-            <button onClick={handleLogin} className="text-xs font-bold text-white hover:text-[#ccff00] uppercase tracking-widest">
+            <button onClick={handleLogin} className="text-[10px] sm:text-xs font-bold text-white hover:text-[#ccff00] uppercase tracking-widest">
               Login
             </button>
           ) : (
-            <div className="flex items-center gap-3 px-4 py-2 bg-[#1E2332] rounded-full border border-white/5 shadow-inner">
-              <Zap size={14} className="text-[#ccff00]" fill="currentColor" />
+            <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-[#1E2332] rounded-full border border-white/5 shadow-inner">
+              <Zap size={12} className="text-[#ccff00] sm:w-3.5 sm:h-3.5" fill="currentColor" />
               <div className="flex flex-col leading-none">
-                <span className="text-sm font-black text-white">{user.tokens}</span>
-                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Credits</span>
+                <span className="text-xs sm:text-sm font-black text-white">{user.tokens}</span>
+                <span className="hidden sm:inline text-[8px] font-bold text-slate-500 uppercase tracking-widest">Credits</span>
               </div>
             </div>
           )}
 
           <div className="relative group">
-            <button onClick={() => navigate('/pricing')} className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-sm font-black hover:scale-105 transition-all shadow-lg active:scale-95">
-              <Crown size={14} fill="white" />
+            <button onClick={() => navigate('/pricing')} className="flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-xs sm:text-sm font-black hover:scale-105 transition-all shadow-lg active:scale-95">
+              <Crown size={12} fill="white" className="sm:w-3.5 sm:h-3.5" />
               <span>Upgrade</span>
             </button>
             <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all pointer-events-none bg-[#1a1c2c] border border-white/10 px-4 py-2 rounded-xl text-[10px] font-bold text-white shadow-2xl z-[100]">
@@ -395,7 +395,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
 
           {session && (
-            <button onClick={handleLogout} className="text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest">
+            <button onClick={handleLogout} className="hidden sm:block text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest">
               Logout
             </button>
           )}
@@ -404,7 +404,7 @@ const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
       <div className="flex flex-col lg:flex-row flex-grow min-h-0">
         {/* CANVAS */}
-        <div className="flex-1 bg-[#0a0a0e] relative flex flex-col items-center p-6 border-r border-white/5 overflow-y-auto">
+        <div className="flex-1 bg-[#0a0a0e] relative flex flex-col items-center p-4 sm:p-6 border-r border-white/5 overflow-y-auto">
           <div className="w-full max-w-4xl space-y-8">
             {step === 'generating' ? (
               <div className="flex flex-col items-center py-20 text-center animate-in fade-in duration-500">
