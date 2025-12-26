@@ -22,6 +22,7 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
     const [showAuthModal, setShowAuthModal] = useState(false);
+    const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
     const navigate = useNavigate();
 
     const handleLogin = async () => {
@@ -365,10 +366,29 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                         <p className="text-xl text-slate-400 max-w-2xl mx-auto">
                             Select a plan to unlock premium styles and guilt-free prank generation.
                         </p>
+
+                        {/* BILLING TOGGLE */}
+                        <div className="flex items-center justify-center mt-8">
+                            <div className="bg-[#151925] p-1 rounded-full border border-white/10 flex relative">
+                                <button
+                                    onClick={() => setBillingCycle('monthly')}
+                                    className={`px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest transition-all relative z-10 ${billingCycle === 'monthly' ? 'text-black' : 'text-slate-500 hover:text-white'}`}
+                                >
+                                    Monthly
+                                </button>
+                                <button
+                                    onClick={() => setBillingCycle('yearly')}
+                                    className={`px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest transition-all relative z-10 ${billingCycle === 'yearly' ? 'text-black' : 'text-slate-500 hover:text-white'}`}
+                                >
+                                    Yearly <span className="text-[9px] bg-green-500 text-black px-1.5 py-0.5 rounded ml-1">-30%</span>
+                                </button>
+                                <div className={`absolute top-1 bottom-1 w-[50%] bg-[#ccff00] rounded-full transition-all duration-300 ${billingCycle === 'monthly' ? 'left-1' : 'left-[49%]'}`}></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {PRICING_PLANS.map((plan) => (
+                        {PRICING_PLANS[billingCycle].map((plan) => (
                             <div
                                 key={plan.id}
                                 className={`relative flex flex-col p-8 rounded-[32px] border transition-all duration-300 group hover:-translate-y-2 ${plan.popular
@@ -378,30 +398,40 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                             >
                                 {plan.popular && (
                                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#ccff00] text-black text-xs font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-lg z-30 animate-bounce">
-                                        Most Popular
+                                        {plan.tag.replace(/[()]/g, '') || 'Most Popular'}
                                     </div>
                                 )}
 
                                 <div className="flex-1 space-y-6">
                                     <div className="flex justify-between items-start">
                                         <div className="text-sm font-bold text-slate-400 uppercase tracking-widest">{plan.name}</div>
-                                        {(plan as any).tag && <div className="text-xs font-bold text-[#ccff00] uppercase tracking-widest opacity-80">{(plan as any).tag}</div>}
+                                        {plan.tag && !plan.popular && <div className="text-xs font-bold text-[#ccff00] uppercase tracking-widest opacity-80">{plan.tag}</div>}
                                     </div>
 
                                     <div className="flex flex-col">
-                                        <span className="text-5xl font-black text-white tracking-tighter">{plan.price}</span>
-                                        <span className="text-xs text-slate-500 font-bold mt-2 uppercase tracking-wide">One-time payment</span>
+                                        <div className="flex items-end gap-2">
+                                            {(plan as any).originalPrice && (
+                                                <span className="text-lg text-slate-500 line-through font-bold mb-1">{(plan as any).originalPrice}</span>
+                                            )}
+                                            <span className="text-5xl font-black text-white tracking-tighter">{plan.price}</span>
+                                            <span className="text-xs text-slate-500 font-bold mb-1 uppercase tracking-wide">{(plan as any).period}</span>
+                                        </div>
                                     </div>
 
                                     <div className="pt-6 space-y-4 border-t border-white/5">
                                         <div className="flex items-center gap-3 text-[#ccff00]">
                                             <Zap size={20} fill="currentColor" />
-                                            <span className="text-xl font-black">{plan.tokens} Chaos Edits</span>
+                                            <span className="text-xl font-black">{plan.tokens} Credits</span>
                                         </div>
                                     </div>
 
                                     <ul className="space-y-4 pt-4">
-                                        {["HD Results", "No Ads", "Priority Queue", "Premium Styles"].map((feat, i) => (
+                                        {(plan as any).features?.map((feat: string, i: number) => (
+                                            <li key={i} className="flex items-center gap-3 text-sm font-bold text-slate-300">
+                                                <div className="bg-[#ccff00]/20 p-1 rounded-full text-[#ccff00]"><Check size={12} strokeWidth={4} /></div>
+                                                {feat}
+                                            </li>
+                                        )) || ["HD Results", "No Ads", "Priority Queue", "Premium Styles"].map((feat, i) => (
                                             <li key={i} className="flex items-center gap-3 text-sm font-bold text-slate-300">
                                                 <div className="bg-[#ccff00]/20 p-1 rounded-full text-[#ccff00]"><Check size={12} strokeWidth={4} /></div>
                                                 {feat}
