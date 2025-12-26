@@ -119,7 +119,7 @@ const PaywallModal: React.FC<PaywallProps> = ({ isOpen, onClose, lang, onPurchas
                     <ul className="space-y-1">
                       {(plan as any).features?.slice(0, 2).map((feat: string, i: number) => (
                         <li key={i} className="flex items-center gap-2 text-[10px] font-bold text-slate-300">
-                          <Check size={10} className="text-[#ccff00]" /> {feat}
+                          {feat}
                         </li>
                       ))}
                     </ul>

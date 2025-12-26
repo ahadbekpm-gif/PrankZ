@@ -65,14 +65,14 @@ export const PRICING_PLANS = {
       description: 'For quick laughs & casual pranks',
       bestFor: 'first-time users and casual fun',
       features: [
-        "30 AI prank images per month",
-        "Image-to-image prank generation",
-        "Basic prank styles (Zombie, Meme, Glitch)",
-        "Standard generation speed",
-        "Simple prompt input",
-        "Download generated images",
-        "Personal use only",
-        "Powered by Nano Banana Pro"
+        "🎭 30 AI prank images per month",
+        "🍌 Powered by Nano Banana Pro",
+        "📸 Image-to-image prank generation",
+        "🎨 Basic prank styles (Zombie, Meme, Glitch)",
+        "⚡ Standard generation speed",
+        "🧠 Simple prompt input",
+        "📥 Download generated images",
+        "🔒 Personal use only"
       ]
     },
     {
@@ -88,15 +88,15 @@ export const PRICING_PLANS = {
       description: 'For creators who prank often',
       bestFor: 'meme creators, content pages, heavy users',
       features: [
-        "80 AI prank images per month",
-        "Full prank style library",
-        "Faster image generation",
-        "Advanced prompt control",
-        "High-quality image downloads",
-        "Share-ready output",
-        "Priority over free users",
-        "Personal use",
-        "Powered by Nano Banana Pro"
+        "🎭 80 AI prank images per month",
+        "🍌 Powered by Nano Banana Pro",
+        "🎨 Full prank style library",
+        "⚡ Faster image generation",
+        "🧠 Advanced prompt control",
+        "📥 High-quality image downloads",
+        "📤 Share-ready output",
+        "🟢 Priority over free users",
+        "🔒 Personal use"
       ]
     },
     {
@@ -112,15 +112,15 @@ export const PRICING_PLANS = {
       description: 'Built for nonstop prank creators',
       bestFor: 'power users & daily prank content',
       features: [
-        "150 AI prank images per month",
-        "All prank styles available",
-        "Priority generation speed",
-        "Full prompt control",
-        "High-resolution image downloads",
-        "Priority processing queue",
-        "Fair-use protection",
-        "Unlimited within fair use (150/mo)",
-        "Powered by Nano Banana Pro"
+        "🎭 150 AI prank images per month",
+        "🍌 Powered by Nano Banana Pro",
+        "🎨 All prank styles available",
+        "⚡ Priority generation speed",
+        "🧠 Full prompt control",
+        "📥 High-resolution image downloads",
+        "🚀 Priority processing queue",
+        "🛡️ Fair-use protection",
+        "⚠️ Unlimited within fair use (150/mo)"
       ]
     }
   ],
@@ -139,13 +139,13 @@ export const PRICING_PLANS = {
       description: 'Same fun, lower price',
       bestFor: 'Casual users who want a year of laughs',
       features: [
-        "300 AI prank images per year",
-        "Image-to-image prank generation",
-        "Basic prank styles",
-        "Standard generation speed",
-        "Image downloads",
-        "Personal use",
-        "Powered by Nano Banana Pro"
+        "🎭 300 AI prank images per year",
+        "🍌 Powered by Nano Banana Pro",
+        "📸 Image-to-image prank generation",
+        "🎨 Basic prank styles",
+        "⚡ Standard generation speed",
+        "📥 Image downloads",
+        "🔒 Personal use"
       ]
     },
     {
@@ -162,13 +162,13 @@ export const PRICING_PLANS = {
       description: 'Maximum value for creators',
       bestFor: 'Creators wanting lowest cost per image',
       features: [
-        "400 AI prank images per year",
-        "Full prank style library",
-        "Faster image generation",
-        "Advanced prompt control",
-        "High-quality downloads",
-        "Priority queue access",
-        "Powered by Nano Banana Pro"
+        "🎭 400 AI prank images per year",
+        "🍌 Powered by Nano Banana Pro",
+        "🎨 Full prank style library",
+        "⚡ Faster image generation",
+        "🧠 Advanced prompt control",
+        "📥 High-quality downloads",
+        "🟢 Priority queue access"
       ]
     },
     {
@@ -185,14 +185,14 @@ export const PRICING_PLANS = {
       description: 'All power, one payment',
       bestFor: 'Power users committed to chaos',
       features: [
-        "600 AI prank images per year",
-        "All prank styles unlocked",
-        "Priority generation speed",
-        "Full prompt control",
-        "High-resolution downloads",
-        "Priority processing",
-        "Fair-use protection",
-        "Powered by Nano Banana Pro"
+        "🎭 600 AI prank images per year",
+        "🍌 Powered by Nano Banana Pro",
+        "🎨 All prank styles unlocked",
+        "⚡ Priority generation speed",
+        "🧠 Full prompt control",
+        "📥 High-resolution downloads",
+        "🚀 Priority processing",
+        "🛡️ Fair-use protection"
       ]
     }
   ]

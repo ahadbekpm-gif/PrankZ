@@ -107,7 +107,6 @@ const PricingPage: React.FC = () => {
                                     <ul className="space-y-3">
                                         {plan.features.map((feat, i) => (
                                             <li key={i} className="flex items-start gap-3 text-sm font-bold text-slate-300">
-                                                <div className="mt-0.5 bg-[#ccff00]/20 p-1 rounded-full text-[#ccff00] min-w-[20px] h-[20px] flex items-center justify-center"><Check size={12} strokeWidth={4} /></div>
                                                 <span className="leading-tight">{feat}</span>
                                             </li>
                                         ))}

@@ -428,7 +428,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                                     <ul className="space-y-4 pt-4">
                                         {(plan as any).features?.map((feat: string, i: number) => (
                                             <li key={i} className="flex items-center gap-3 text-sm font-bold text-slate-300">
-                                                <div className="bg-[#ccff00]/20 p-1 rounded-full text-[#ccff00]"><Check size={12} strokeWidth={4} /></div>
                                                 {feat}
                                             </li>
                                         )) || ["HD Results", "No Ads", "Priority Queue", "Premium Styles"].map((feat, i) => (
