@@ -20,6 +20,40 @@ interface LandingPageProps {
     onStart: () => void;
 }
 
+const CountUpAnimation: React.FC<{ end: number; duration?: number }> = ({ end, duration = 2000 }) => {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        let startTime: number | null = null;
+        let animationFrameId: number;
+
+        const animate = (timestamp: number) => {
+            if (!startTime) startTime = timestamp;
+            const progress = timestamp - startTime;
+            const percentage = Math.min(progress / duration, 1);
+
+            // Ease out expo
+            const easeOut = (x: number): number => {
+                return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+            };
+
+            setCount(Math.floor(easeOut(percentage) * end));
+
+            if (progress < duration) {
+                animationFrameId = requestAnimationFrame(animate);
+            } else {
+                setCount(end); // Ensure final value is exact
+            }
+        };
+
+        animationFrameId = requestAnimationFrame(animate);
+
+        return () => cancelAnimationFrame(animationFrameId);
+    }, [end, duration]);
+
+    return <>{count.toLocaleString()}</>;
+};
+
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
@@ -144,43 +178,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                 <div className="max-w-4xl mx-auto relative z-10">
                     <div className="bg-[#151925]/80 backdrop-blur-sm border border-white/10 rounded-full py-4 px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left shadow-lg overflow-hidden relative group hover:border-[#ccff00]/20 transition-colors">
                         <div className="absolute top-0 left-1/4 w-32 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 animate-shimmer" />
-
-// Helper component for number animation
-                        const CountUpAnimation: React.FC<{ end: number; duration?: number }> = ({end, duration = 2000}) => {
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-                            let startTime: number | null = null;
-                        let animationFrameId: number;
-
-        const animate = (timestamp: number) => {
-            if (!startTime) startTime = timestamp;
-                        const progress = timestamp - startTime;
-                        const percentage = Math.min(progress / duration, 1);
-
-            // Ease out expo
-            const easeOut = (x: number): number => {
-                return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
-            };
-
-                        setCount(Math.floor(easeOut(percentage) * end));
-
-                        if (progress < duration) {
-                            animationFrameId = requestAnimationFrame(animate);
-            } else {
-                            setCount(end); // Ensure final value is exact
-            }
-        };
-
-                        animationFrameId = requestAnimationFrame(animate);
-
-        return () => cancelAnimationFrame(animationFrameId);
-    }, [end, duration]);
-
-                        return <>{count.toLocaleString()}</>;
-};
-
-                        // ... inside LandingPage component ...
 
                         <div className="flex items-center gap-3">
                             <span className="text-2xl">🔥</span>
