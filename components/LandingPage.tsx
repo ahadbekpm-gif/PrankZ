@@ -104,10 +104,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                                 onClick={handleLogin}
                                 className="w-full sm:w-auto px-8 py-4 bg-[#ccff00] text-black text-lg font-black rounded-2xl hover:bg-[#b3e600] hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(204,255,0,0.3)] flex items-center justify-center gap-3"
                             >
-                                <Zap size={20} fill="black" /> Start the Chaos (Free)
+                                <Zap size={20} fill="black" /> Start the Chaos
                             </button>
                             <span className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                                <CheckCircle2 size={14} /> No login. No mercy. First one's on us.
+                                <CheckCircle2 size={14} /> No login. No mercy.
                             </span>
                         </div>
                     </div>
