@@ -1,6 +1,6 @@
 
 export type Language = 'en';
-export type PlanType = 'free' | 'weekly' | 'monthly' | 'yearly';
+export type PlanType = 'free' | 'starter_monthly' | 'pro_monthly' | 'unlimited_monthly' | 'starter_yearly' | 'pro_yearly' | 'unlimited_yearly';
 
 export interface UserState {
   tokens: number;

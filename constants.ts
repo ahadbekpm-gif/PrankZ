@@ -50,38 +50,87 @@ export const TRANSLATIONS: Translation = {
   }
 };
 
-export const PRICING_PLANS = [
-  {
-    id: 'weekly',
-    name: '⚡ Weekly',
-    price: '$2.99',
-    tokens: 20,
-    popular: false,
-    tag: '(impulse)',
-    color: 'from-blue-500 to-cyan-500',
-    link: 'https://buy.paddle.com/checkout/...' // Replace with real link
-  },
-  {
-    id: 'monthly',
-    name: '🔥 Monthly',
-    price: '$7.99',
-    tokens: 80,
-    popular: true,
-    tag: '(BEST VALUE)',
-    color: 'from-purple-600 to-pink-600',
-    link: 'https://buy.paddle.com/checkout/...' // Replace with real link
-  },
-  {
-    id: 'yearly',
-    name: '💀 Yearly',
-    price: '$59.99',
-    tokens: 1000,
-    popular: false,
-    tag: '(Most chaotic)',
-    color: 'from-yellow-500 to-orange-600',
-    link: 'https://buy.paddle.com/checkout/...' // Replace with real link
-  }
-];
+export const PRICING_PLANS = {
+  monthly: [
+    {
+      id: 'starter_monthly',
+      name: '🔹 Starter',
+      price: '$9',
+      period: '/ month',
+      tokens: 30,
+      popular: false,
+      tag: '(Impulse Buy)',
+      color: 'from-blue-500 to-cyan-500',
+      link: 'https://buy.paddle.com/checkout/...',
+      features: ["30 credits/images"]
+    },
+    {
+      id: 'pro_monthly',
+      name: '🔹 Pro',
+      price: '$19',
+      period: '/ month',
+      tokens: 80,
+      popular: true,
+      tag: '(Best Seller ⭐)',
+      color: 'from-purple-600 to-pink-600',
+      link: 'https://buy.paddle.com/checkout/...',
+      features: ["80 credits/images"]
+    },
+    {
+      id: 'unlimited_monthly',
+      name: '🔹 Unlimited*',
+      price: '$39',
+      period: '/ month',
+      tokens: 150, // Soft cap internal logic should handle this, UI says 150
+      popular: false,
+      tag: '(Soft-Capped)',
+      color: 'from-yellow-500 to-orange-600',
+      link: 'https://buy.paddle.com/checkout/...',
+      features: ["150 images (stated)", "Fair-use policy (≈200/mo)"]
+    }
+  ],
+  yearly: [
+    {
+      id: 'starter_yearly',
+      name: '🟢 Starter Yearly',
+      price: '$59',
+      period: '/ year',
+      originalPrice: '$90',
+      tokens: 300,
+      popular: false,
+      tag: '',
+      color: 'from-green-500 to-emerald-600',
+      link: 'https://buy.paddle.com/checkout/...',
+      features: ["300 credits/images"]
+    },
+    {
+      id: 'pro_yearly',
+      name: '🟢 Pro Yearly',
+      price: '$89',
+      period: '/ year',
+      originalPrice: '$119',
+      tokens: 500,
+      popular: true,
+      tag: '(BEST DEAL 🔥)',
+      color: 'from-purple-600 to-pink-600',
+      link: 'https://buy.paddle.com/checkout/...',
+      features: ["500 credits/images"]
+    },
+    {
+      id: 'unlimited_yearly',
+      name: '🟢 Unlimited Yearly',
+      price: '$129',
+      period: '/ year',
+      originalPrice: '$189',
+      tokens: 700,
+      popular: false,
+      tag: '',
+      color: 'from-yellow-500 to-orange-600',
+      link: 'https://buy.paddle.com/checkout/...',
+      features: ["700 credits/images"]
+    }
+  ]
+};
 
 export const EXAMPLES = [
   {
