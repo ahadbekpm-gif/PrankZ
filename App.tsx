@@ -49,42 +49,8 @@ const SocialProofSection: React.FC<{ className?: string }> = ({ className = "" }
   </div>
 );
 
-const SocialProofSection: React.FC<{ className?: string }> = ({ className = "" }) => (
-  <div className={`mt-auto pt-20 flex flex-col items-center gap-6 z-10 ${className}`}>
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-60">
-      <span className="flex items-center gap-2"><Flame size={12} className="text-orange-500" /> 12,403,999 photos ruined</span>
-      <span className="hidden sm:inline">•</span>
-      <span className="flex items-center gap-2"><Brain size={12} className="text-purple-500" /> Powered by AI Chaos Engine</span>
-      <span className="hidden sm:inline">•</span>
-      <span>🚫 Not responsible for group chats</span>
-    </div>
-
-    <div className="text-center animate-in fade-in duration-1000 delay-500">
-      <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity cursor-default">
-        Make memes. Ruin friendships. Repeat.
-      </p>
-    </div>
-  </div>
-);
-
 // --- EDITOR APP ---
 const EditorApp: React.FC<{ onBack: () => void }> = ({ onBack }) => {
-  // ... existing state/logic ...
-  // (Skipping to render mostly, but I need to replace the whole EditorApp or at least the render part if I can match lines)
-  // Actually, it is safer to define SocialProofSection OUTSIDE EditorApp to avoid recreation.
-  // Let's replace the content block.
-
-  // Wait, I cannot introduce a new component outside easily with replace_file_content if I'm targeting lines inside.
-  // I will Inline the Social Proof in two places for simplicity, OR define it above EditorApp if I was viewing whole file.
-  // I viewed lines 400-645.
-  // I will define the CONSTANT variable for the content or component above EditorApp in a separate tool call if needed, OR just duplicate the simple JSX for now to guarantee functionality without breaking file structure blindspots.
-  // Actually, duplication of 15 lines of JSX is fine for reliability here.
-
-  // Badge fix:
-  // Old: <div className="absolute left-1/2 -translate-x-1/2 -top-6 bg-[#ccff00]..."
-  // New: <div className="absolute -top-6 left-0 w-full flex justify-center z-30"> <div className="bg-[#ccff00]..." > ... </div> </div>
-
-  // Let's do this in chunks.
 
   const lang: Language = 'en';
   const [step, setStep] = useState<AppStep>('upload');
