@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PRICING_PLANS } from '../constants';
 import { Check, Zap, Crown, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../services/supabase';
 
 const PricingPage: React.FC = () => {
+    const [backPath, setBackPath] = useState('/');
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                setBackPath('/editor');
+            }
+        };
+        checkSession();
+    }, []);
+
     return (
         <div className="min-h-screen bg-[#050511] text-white">
             {/* Header */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050511]/80 backdrop-blur-md border-b border-white/5">
                 <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-                    <Link to="/" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group">
+                    <Link to={backPath} className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group">
                         <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
                         <span className="font-bold uppercase tracking-widest text-sm">Back to Home</span>
                     </Link>
