@@ -17,6 +17,7 @@ import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
 import LegalPage from './components/LegalPage';
 import PricingPage from './components/PricingPage';
+import SuccessPage from './components/SuccessPage';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -676,6 +677,7 @@ const App: React.FC = () => {
         <Route path="/" element={<LandingPageWrapper />} />
         <Route path="/editor" element={<EditorAppWrapper />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/success" element={<SuccessPage />} />
         <Route path="/privacy" element={<LegalPage docKey="privacy" />} />
         <Route path="/terms" element={<LegalPage docKey="terms" />} />
         <Route path="/refund" element={<LegalPage docKey="refund" />} />
