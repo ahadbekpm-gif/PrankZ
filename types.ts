@@ -42,7 +42,7 @@ export interface PricingPlan {
   popular: boolean;
   tag: string;
   color: string;
-  link?: string;
+  priceId: string; // Polar.sh Price ID
   features: string[];
   description?: string;
   bestFor?: string;

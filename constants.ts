@@ -61,7 +61,7 @@ export const PRICING_PLANS = {
       popular: false,
       tag: '',
       color: 'from-blue-500 to-cyan-500',
-      link: 'https://buy.paddle.com/checkout/...',
+      priceId: 'polar_price_starter_monthly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
       description: 'For quick laughs & casual pranks',
       bestFor: 'first-time users and casual fun',
       features: [
@@ -84,7 +84,7 @@ export const PRICING_PLANS = {
       popular: true,
       tag: 'Most Popular',
       color: 'from-purple-600 to-pink-600',
-      link: 'https://buy.paddle.com/checkout/...',
+      priceId: 'polar_price_pro_monthly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
       description: 'For creators who prank often',
       bestFor: 'meme creators, content pages, heavy users',
       features: [
@@ -108,7 +108,7 @@ export const PRICING_PLANS = {
       popular: false,
       tag: 'Maximum Chaos',
       color: 'from-yellow-500 to-orange-600',
-      link: 'https://buy.paddle.com/checkout/...',
+      priceId: 'polar_price_power_monthly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
       description: 'Built for nonstop prank creators',
       bestFor: 'power users & daily prank content',
       features: [
@@ -135,7 +135,7 @@ export const PRICING_PLANS = {
       popular: false,
       tag: 'Save Big',
       color: 'from-green-500 to-emerald-600',
-      link: 'https://buy.paddle.com/checkout/...',
+      priceId: 'polar_price_starter_yearly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
       description: 'Same fun, lower price',
       bestFor: 'Casual users who want a year of laughs',
       features: [
@@ -158,7 +158,7 @@ export const PRICING_PLANS = {
       popular: true,
       tag: 'BEST DEAL',
       color: 'from-purple-600 to-pink-600',
-      link: 'https://buy.paddle.com/checkout/...',
+      priceId: 'polar_price_pro_yearly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
       description: 'Maximum value for creators',
       bestFor: 'Creators wanting lowest cost per image',
       features: [
@@ -181,7 +181,7 @@ export const PRICING_PLANS = {
       popular: false,
       tag: 'All Power',
       color: 'from-yellow-500 to-orange-600',
-      link: 'https://buy.paddle.com/checkout/...',
+      priceId: 'polar_price_power_yearly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
       description: 'All power, one payment',
       bestFor: 'Power users committed to chaos',
       features: [
