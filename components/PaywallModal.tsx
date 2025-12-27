@@ -29,9 +29,9 @@ const PaywallModal: React.FC<PaywallProps> = ({ isOpen, onClose, lang, onPurchas
       if (data?.url) {
         window.location.href = data.url;
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Checkout error:', err);
-      alert('Failed to start checkout. Please try again.');
+      alert(`Checkout Failed: ${err.message || JSON.stringify(err)}`);
     } finally {
       setIsLoading(false);
     }
