@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Check, Crown, Zap, Star, Loader2 } from 'lucide-react';
 import { TRANSLATIONS, PRICING_PLANS } from '../constants';
 import { Language, PlanType } from '../types';
+import { supabase } from '../services/supabase';
 
 interface PaywallProps {
   isOpen: boolean;
