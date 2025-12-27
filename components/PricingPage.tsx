@@ -17,6 +17,8 @@ const PricingPage: React.FC = () => {
             });
 
             if (error) throw error;
+            if (data?.error) throw new Error(data.error); // Handle tunneled errors
+
             if (data?.url) {
                 window.location.href = data.url;
             }

@@ -54,7 +54,7 @@ serve(async (req: Request) => {
     } catch (error: any) {
         return new Response(JSON.stringify({ error: error.message }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            status: 400,
+            status: 200, // Return 200 so client receives the error details
         });
     }
 });
