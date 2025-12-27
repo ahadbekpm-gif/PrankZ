@@ -61,7 +61,7 @@ export const PRICING_PLANS = {
       popular: false,
       tag: '',
       color: 'from-blue-500 to-cyan-500',
-      priceId: 'polar_price_starter_monthly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
+      priceId: '96a1af92-3b43-4448-b5ab-5af5104be850', // Starter Monthly
       description: 'For quick laughs & casual pranks',
       bestFor: 'first-time users and casual fun',
       features: [
@@ -84,7 +84,7 @@ export const PRICING_PLANS = {
       popular: true,
       tag: 'Most Popular',
       color: 'from-purple-600 to-pink-600',
-      priceId: 'polar_price_pro_monthly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
+      priceId: '8bf1dd6f-1eab-48a1-b847-7ad973ee7cc7', // Pro Monthly
       description: 'For creators who prank often',
       bestFor: 'meme creators, content pages, heavy users',
       features: [
@@ -108,7 +108,7 @@ export const PRICING_PLANS = {
       popular: false,
       tag: 'Maximum Chaos',
       color: 'from-yellow-500 to-orange-600',
-      priceId: 'polar_price_power_monthly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
+      priceId: '875442a2-61a5-48f5-a6bc-446c067d06bf', // Unlimited Monthly
       description: 'Built for nonstop prank creators',
       bestFor: 'power users & daily prank content',
       features: [
@@ -135,7 +135,7 @@ export const PRICING_PLANS = {
       popular: false,
       tag: 'Save Big',
       color: 'from-green-500 to-emerald-600',
-      priceId: 'polar_price_starter_yearly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
+      priceId: 'c00152fe-febc-4ca4-a23c-93c31f2f4fc1', // Starter Yearly
       description: 'Same fun, lower price',
       bestFor: 'Casual users who want a year of laughs',
       features: [
@@ -158,7 +158,7 @@ export const PRICING_PLANS = {
       popular: true,
       tag: 'BEST DEAL',
       color: 'from-purple-600 to-pink-600',
-      priceId: 'polar_price_pro_yearly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
+      priceId: '34d765e8-47d6-4e6c-aa18-ad4c3e01e99f', // Pro Yearly
       description: 'Maximum value for creators',
       bestFor: 'Creators wanting lowest cost per image',
       features: [
@@ -181,7 +181,7 @@ export const PRICING_PLANS = {
       popular: false,
       tag: 'All Power',
       color: 'from-yellow-500 to-orange-600',
-      priceId: 'polar_price_power_yearly_PLACEHOLDER', // TODO: REPLACE WITH ACTUAL ID
+      priceId: '5e94164b-0ada-41c0-a1fa-a4237a1c0f18', // Unlimited Yearly
       description: 'All power, one payment',
       bestFor: 'Power users committed to chaos',
       features: [
