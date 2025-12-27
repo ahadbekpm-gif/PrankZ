@@ -126,11 +126,14 @@ const PaywallModal: React.FC<PaywallProps> = ({ isOpen, onClose, lang, onPurchas
                   </div>
                 </div>
 
-                <button className={`w-full mt-5 sm:mt-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 ${plan.popular
-                  ? 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[#ccff00]/20'
-                  : 'bg-[#1E2332] text-white hover:bg-[#252a3b]'
-                  }`}>
-                  {plan.popular ? 'Upgrade & Ruin Photos' : 'Select Plan'}
+                <button
+                  onClick={() => handleCheckout(plan.priceId)}
+                  disabled={isLoading}
+                  className={`w-full mt-5 sm:mt-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 ${plan.popular
+                    ? 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[#ccff00]/20'
+                    : 'bg-[#1E2332] text-white hover:bg-[#252a3b]'
+                    } ${isLoading ? 'opacity-70 cursor-wait' : ''}`}>
+                  {isLoading ? <Loader2 className="animate-spin" size={16} /> : (plan.popular ? 'Upgrade & Ruin Photos' : 'Select Plan')}
                 </button>
               </div>
             ))}

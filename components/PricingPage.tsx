@@ -115,17 +115,20 @@ const PricingPage: React.FC = () => {
                             </div>
 
                             <div className="mt-8 pt-6 border-t border-white/5">
-                                <a
-                                    href={plan.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <button
+                                    onClick={() => handleCheckout(plan.priceId)}
+                                    disabled={isLoading}
                                     className={`w-full py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 ${plan.popular
                                         ? 'bg-[#ccff00] text-black hover:bg-[#b3e600] shadow-[#ccff00]/20'
                                         : 'bg-[#1E2332] text-white hover:bg-[#252a3b]'
-                                        }`}
+                                        } ${isLoading ? 'opacity-70 cursor-wait' : ''}`}
                                 >
-                                    {plan.popular ? 'Get Instant Access' : 'Choose Plan'}
-                                </a>
+                                    {isLoading ? (
+                                        <Loader2 className="animate-spin" size={20} />
+                                    ) : (
+                                        plan.popular ? 'Get Instant Access' : 'Choose Plan'
+                                    )}
+                                </button>
                                 {plan.bestFor && (
                                     <p className="text-center mt-4 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
                                         Best for: <span className="text-slate-300">{plan.bestFor}</span>
