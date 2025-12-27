@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Check, Crown, Zap, Star } from 'lucide-react';
+import { X, Check, Crown, Zap, Star, Loader2 } from 'lucide-react';
 import { TRANSLATIONS, PRICING_PLANS } from '../constants';
 import { Language, PlanType } from '../types';
 
@@ -15,6 +15,26 @@ const PaywallModal: React.FC<PaywallProps> = ({ isOpen, onClose, lang, onPurchas
 
   const t = TRANSLATIONS;
   const [billingCycle, setBillingCycle] = React.useState<'monthly' | 'yearly'>('yearly');
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleCheckout = async (priceId: string) => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { priceId, successUrl: window.location.origin + '/success?checkout_id={CHECKOUT_ID}' }
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      alert('Failed to start checkout. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/95 backdrop-blur-xl animate-in fade-in duration-300 overflow-y-auto">

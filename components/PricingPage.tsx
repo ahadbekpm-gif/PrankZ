@@ -1,12 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { PRICING_PLANS } from '../constants';
-import { Check, Zap, Crown, ArrowLeft } from 'lucide-react';
+import { Check, Zap, Crown, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../services/supabase';
 
 const PricingPage: React.FC = () => {
     const [backPath, setBackPath] = useState('/');
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleCheckout = async (priceId: string) => {
+        try {
+            setIsLoading(true);
+            const { data, error } = await supabase.functions.invoke('create-checkout', {
+                body: { priceId, successUrl: window.location.origin + '/success?checkout_id={CHECKOUT_ID}' }
+            });
+
+            if (error) throw error;
+            if (data?.url) {
+                window.location.href = data.url;
+            }
+        } catch (err) {
+            console.error('Checkout error:', err);
+            alert('Failed to start checkout. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
         const checkSession = async () => {
